@@ -112,6 +112,7 @@ logs/
 *.patch
 
 # Ignore entire src folder
+src/
 supabase/
 
 # Others
