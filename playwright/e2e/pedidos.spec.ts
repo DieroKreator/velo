@@ -8,11 +8,16 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
     await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
 
     // Act
-    await page.getByTestId('search-order-id').fill('VLO-6E2J20')
-    await page.getByTestId('search-order-button').click()
+    // await page.locator('//label[text()="Número do Pedido"]/..//input').fill('VLO-6E2J20') // XPAth como ultimo recurso
+    await page.getByRole('textbox', { name: 'Número do pedido' }).fill('VLO-6E2J20') // Way more readable
+    // await page.getByTestId('search-order-button').click()
+    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+    // await page.locator('//button[text()="Buscar Pedido"]').click()
 
     // Assert
-    expect(page.getByTestId('order-result-id')).toBeVisible()
+    // await page.waitForTimeout(10000) // Evite Timeouts Implicitos
+
+    expect(page.getByTestId('order-result-id')).toBeVisible({ timeout: 30_000 })
     expect(page.getByTestId('order-result-id')).toContainText('VLO-6E2J20')
 
     expect(page.getByTestId('order-result-status')).toBeVisible()
