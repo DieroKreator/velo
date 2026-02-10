@@ -7,11 +7,11 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
     await page.getByRole('link', { name: 'Consultar Pedido' }).click()
     await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
 
-    await page.getByRole('textbox', { name: 'Número do pedido' }).fill('VLO-6E2J20') // Way more readable
+    await page.getByRole('textbox', { name: 'Número do pedido' }).fill('VLO-GXNL53') // Way more readable
     await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
     // Assert
-    await expect(page.getByText('VLO-GXNL53')).toBeVisible({ timeout: 30_000 })
+    await expect(page.getByText('VLO-GXNL53')).toBeVisible({ timeout: 10_000 })
     // expect(page.getByTestId('order-result-id')).toContainText('VLO-6E2J20')
 
     await expect(page.getByText('APROVADO')).toBeVisible()
