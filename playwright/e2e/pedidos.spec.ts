@@ -76,7 +76,7 @@ test.describe('Consulta de Pedido', ()=> {
             - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
             `);
 
-            const statusBadge = page.getByRole('status').filter({ hasText: 'APROVADO' })
+            const statusBadge = page.getByRole('status').filter({ hasText: order.status })
             await expect(statusBadge).toHaveClass(/bg-green-100/)
             await expect(statusBadge).toHaveClass(/text-green-700/)
 
@@ -91,7 +91,7 @@ test.describe('Consulta de Pedido', ()=> {
             number: 'VLO-YX5W8U',
             status: 'REPROVADO',
             color: 'Midnight Black',
-            wheels: 'Sport Wheels',
+            wheels: 'sport Wheels',
             customer: {
                 name: 'Carla Gilles',
                 email: 'cagi@dev.com'
@@ -102,12 +102,13 @@ test.describe('Consulta de Pedido', ()=> {
         await page.getByRole('textbox', { name: 'Número do pedido' }).fill(order.number) // Way more readable
         await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
-        await expect(page.getByTestId(`order-result-${order}`)).toMatchAriaSnapshot(`
+        await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
             - img
             - paragraph: Pedido
-            - paragraph: ${order}
-            - img
-            - text: ${order.status}
+            - paragraph: ${order.number}
+            - status:
+              - img
+              - text: ${order.status}
             - img "Velô Sprint"
             - paragraph: Modelo
             - paragraph: Velô Sprint
@@ -130,6 +131,13 @@ test.describe('Consulta de Pedido', ()=> {
             - paragraph: ${order.payment}
             - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
             `);
+
+            const statusBadge = page.getByRole('status').filter({ hasText: order.status })
+            await expect(statusBadge).toHaveClass(/bg-red-100/)
+            await expect(statusBadge).toHaveClass(/text-red-700/)
+
+            const statusIcon = statusBadge.locator('svg')
+            await expect(statusIcon).toHaveClass(/lucide-circle-x/)
     })
 
     test('deve consultar um pedido em analise', async ({ page }) => {
@@ -149,12 +157,13 @@ test.describe('Consulta de Pedido', ()=> {
         await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order.number) // Way more readable
         await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
-        await expect(page.getByTestId(`order-result-${order}`)).toMatchAriaSnapshot(`
+        await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
             - img
             - paragraph: Pedido
-            - paragraph: ${order}
-            - img
-            - text: ${order.status}
+            - paragraph: ${order.number}
+            - status:
+              - img
+              - text: ${order.status}
             - img "Velô Sprint"
             - paragraph: Modelo
             - paragraph: Velô Sprint
@@ -177,6 +186,13 @@ test.describe('Consulta de Pedido', ()=> {
             - paragraph: ${order.payment}
             - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
             `);
+
+            const statusBadge = page.getByRole('status').filter({ hasText: order.status })
+            await expect(statusBadge).toHaveClass(/bg-amber-100/)
+            await expect(statusBadge).toHaveClass(/text-amber-700/)
+
+            const statusIcon = statusBadge.locator('svg')
+            await expect(statusIcon).toHaveClass(/lucide-clock/)
     })
     
     test('deve exibir mensagem quando o pedido não', async ({ page }) => {
