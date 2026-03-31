@@ -74,6 +74,10 @@ test.describe('Consulta de Pedido', ()=> {
             - paragraph: ${order.payment}
             - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
             `);
+
+            const statusBadge = page.getByRole('status').filter({ hasText: 'APROVADO' })
+            await expect(statusBadge).toHaveClass('bg-green-500')
+            
     })
 
     test('deve consultar um pedido reprovado', async ({ page }) => {
