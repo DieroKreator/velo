@@ -50,8 +50,9 @@ test.describe('Consulta de Pedido', ()=> {
             - img
             - paragraph: Pedido
             - paragraph: ${order.number}
-            - img
-            - text: ${order.status}
+            - status:
+              - img
+              - text: ${order.status}
             - img "Velô Sprint"
             - paragraph: Modelo
             - paragraph: Velô Sprint
@@ -76,7 +77,11 @@ test.describe('Consulta de Pedido', ()=> {
             `);
 
             const statusBadge = page.getByRole('status').filter({ hasText: 'APROVADO' })
-            await expect(statusBadge).toHaveClass('bg-green-500')
+            await expect(statusBadge).toHaveClass(/bg-green-100/)
+            await expect(statusBadge).toHaveClass(/text-green-700/)
+
+            const statusIcon = statusBadge.locator('svg')
+            await expect(statusIcon).toHaveClass(/lucide-circle-check-big/)
             
     })
 
