@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { generateOrderCode } from '../support/helpers'
+import { generateOrderCode, searchOrder } from '../support/helpers'
 
 test.describe('Consulta de Pedido', ()=> {
 
@@ -29,8 +29,7 @@ test.describe('Consulta de Pedido', ()=> {
         }
     
         // Act
-        await page.getByRole('textbox', { name: 'Número do pedido' }).fill(order.number) // Way more readable
-        await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+        await searchOrder(page, order.number)
     
         // Assert
         // expect(page.getByTestId('order-result-id')).toContainText(order)
@@ -99,8 +98,7 @@ test.describe('Consulta de Pedido', ()=> {
             payment: 'À Vista'
         }
     
-        await page.getByRole('textbox', { name: 'Número do pedido' }).fill(order.number) // Way more readable
-        await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+        await searchOrder(page, order.number)
 
         await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
             - img
@@ -154,8 +152,7 @@ test.describe('Consulta de Pedido', ()=> {
             payment: 'À Vista'
         }
     
-        await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order.number) // Way more readable
-        await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+        await searchOrder(page, order.number)
 
         await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
             - img
@@ -199,8 +196,7 @@ test.describe('Consulta de Pedido', ()=> {
     
         const order = generateOrderCode()
     
-        await page.getByRole('textbox', { name: 'Número do pedido' }).fill(order)
-        await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+        await searchOrder(page, order)
     
         // await expect(page.locator('#root')).toContainText('Pedido não encontrado')
         // await expect(page.locator('#root')).toContainText('Verifique o número do pedido e tente novamente')

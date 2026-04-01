@@ -1,3 +1,5 @@
+import { Page } from '@playwright/test'
+
 export function generateOrderCode() {
     const prefix = "VLO";
 
@@ -10,4 +12,9 @@ export function generateOrderCode() {
     const numbers = Math.floor(100 + Math.random() * 900); // garante 3 dígitos
 
     return `${prefix}-${letters}${numbers}`;
+}
+
+export async function searchOrder(page: Page, orderNumber: string) {
+  await page.getByRole('textbox', { name: 'Código do Pedido' }).fill(orderNumber)
+  await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 }
