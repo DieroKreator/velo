@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { generateOrderCode } from '../support/helpers'
-import { ConsultaPedidoPage } from '../support/pages/ConsultaPedidoPage'
+import { OrderLockupPage } from '../support/pages/OrderLockupPage'
 
 test.describe('Consulta de Pedido', ()=> {
 

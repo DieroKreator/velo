@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test"
 
-export class ConsultaPedidoPage {
+export class OrderLockupPage {
     constructor(private page: Page) {}
   
     async buscarPedido(numero: string) {
