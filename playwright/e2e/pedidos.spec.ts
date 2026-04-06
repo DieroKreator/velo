@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
-import { generateOrderCode, searchOrder } from '../support/helpers'
+import { generateOrderCode } from '../support/helpers'
+import { ConsultaPedidoPage } from '../support/pages/ConsultaPedidoPage'
 
 test.describe('Consulta de Pedido', ()=> {
 
@@ -29,7 +30,8 @@ test.describe('Consulta de Pedido', ()=> {
         }
     
         // Act
-        await searchOrder(page, order.number)
+        const consultaPedido = new ConsultaPedidoPage(page)
+        await consultaPedido.buscarPedido(order.number)
     
         // Assert
         // expect(page.getByTestId('order-result-id')).toContainText(order)
@@ -98,7 +100,8 @@ test.describe('Consulta de Pedido', ()=> {
             payment: 'À Vista'
         }
     
-        await searchOrder(page, order.number)
+        const consultaPedido = new ConsultaPedidoPage(page)
+        await consultaPedido.buscarPedido(order.number)
 
         await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
             - img
@@ -152,7 +155,8 @@ test.describe('Consulta de Pedido', ()=> {
             payment: 'À Vista'
         }
     
-        await searchOrder(page, order.number)
+        const consultaPedido = new ConsultaPedidoPage(page)
+        await consultaPedido.buscarPedido(order.number)
 
         await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
             - img
@@ -196,7 +200,8 @@ test.describe('Consulta de Pedido', ()=> {
     
         const order = generateOrderCode()
     
-        await searchOrder(page, order)
+        const consultaPedido = new ConsultaPedidoPage(page)
+        await consultaPedido.buscarPedido(order)
     
         // await expect(page.locator('#root')).toContainText('Pedido não encontrado')
         // await expect(page.locator('#root')).toContainText('Verifique o número do pedido e tente novamente')

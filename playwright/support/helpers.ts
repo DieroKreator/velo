@@ -13,8 +13,3 @@ export function generateOrderCode() {
 
     return `${prefix}-${letters}${numbers}`;
 }
-
-export async function searchOrder(page: Page, orderNumber: string) {
-  await page.getByRole('textbox', { name: 'Código do Pedido' }).fill(orderNumber)
-  await page.getByRole('button', { name: 'Buscar Pedido' }).click()
-}
