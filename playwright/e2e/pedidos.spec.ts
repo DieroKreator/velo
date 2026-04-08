@@ -7,6 +7,7 @@ import { generateOrderCode } from '../support/helpers'
 test.describe('Consulta de Pedido', () => {
 
   let orderLockupPage: OrderLockupPage
+  
   test.beforeEach(async ({ page }) => {
 
     await new LandingPage(page).goto('Velô Sprint')
@@ -30,13 +31,8 @@ test.describe('Consulta de Pedido', () => {
       payment: 'À Vista'
     }
 
-    // Act  
     await orderLockupPage.searchOrder(order.number)
-
-    // Assert
     await orderLockupPage.validateOrderDetails(order)
-
-    // Validação do badge de status encapsulada no Page Object
     await orderLockupPage.validateStatusBadge(order.status)
 
   })
@@ -56,13 +52,8 @@ test.describe('Consulta de Pedido', () => {
       payment: 'À Vista'
     }
 
-    // Act  
     await orderLockupPage.searchOrder(order.number)
-
-    // Assert
     await orderLockupPage.validateOrderDetails(order)
-
-    // Validação do badge de status encapsulada no Page Object
     await orderLockupPage.validateStatusBadge(order.status)
   })
 
@@ -81,13 +72,8 @@ test.describe('Consulta de Pedido', () => {
       payment: 'À Vista'
     }
 
-    // Act  
     await orderLockupPage.searchOrder(order.number)
-
-    // Assert
     await orderLockupPage.validateOrderDetails(order)
-
-    // Validação do badge de status encapsulada no Page Object
     await orderLockupPage.validateStatusBadge(order.status)
   })
 
