@@ -3,13 +3,9 @@ import { Page, expect } from '@playwright/test'
 export class LandingPage {
   constructor(private page: Page) {}
 
-  async goto() {
+  async goto(titleText: string) {
     await this.page.goto('/')
-  }
-
-  async validateHeroTitle(title: string) {
-    await expect(
-      this.page.getByTestId('hero-section').getByRole('heading')
-    ).toContainText(title)
+    const titleLocator = this.page.getByTestId('hero-section').getByRole('heading')
+    await expect(titleLocator).toContainText(titleText)
   }
 }

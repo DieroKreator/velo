@@ -1,20 +1,18 @@
 import { test, expect } from '@playwright/test'
-
-import { generateOrderCode } from '../support/helpers'
-
+import { Navbar } from '../support/components/Navbar'
+import { LandingPage } from '../support/pages/LandingPage'
 import { OrderDetails, OrderLockupPage } from '../support/pages/OrderLockupPage'
-
-/// AAA - Arrange, Act, Assert
+import { generateOrderCode } from '../support/helpers'
 
 test.describe('Consulta de Pedido', () => {
 
+  let orderLockupPage: OrderLockupPage
   test.beforeEach(async ({ page }) => {
-    // Arrange
-    await page.goto('http://localhost:5173/')
-    await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
 
-    await page.getByRole('link', { name: 'Consultar Pedido' }).click()
-    await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
+    await new LandingPage(page).goto('Velô Sprint')
+    await new Navbar(page).orderLockupLink()
+    orderLockupPage = new OrderLockupPage(page)
+    await new OrderLockupPage(page).validatePageIsLoaded('Consultar Pedido')
   })
 
   test('deve consultar um pedido aprovado', async ({ page }) => {
@@ -33,7 +31,6 @@ test.describe('Consulta de Pedido', () => {
     }
 
     // Act  
-    const orderLockupPage = new OrderLockupPage(page)
     await orderLockupPage.searchOrder(order.number)
 
     // Assert
@@ -60,7 +57,6 @@ test.describe('Consulta de Pedido', () => {
     }
 
     // Act  
-    const orderLockupPage = new OrderLockupPage(page)
     await orderLockupPage.searchOrder(order.number)
 
     // Assert
@@ -86,7 +82,6 @@ test.describe('Consulta de Pedido', () => {
     }
 
     // Act  
-    const orderLockupPage = new OrderLockupPage(page)
     await orderLockupPage.searchOrder(order.number)
 
     // Assert
@@ -98,12 +93,9 @@ test.describe('Consulta de Pedido', () => {
 
   test('deve exibir mensagem quando o pedido não é encontrado', async ({ page }) => {
 
-    const order = 'XYZ-999-INVALIDO'
+    const order = generateOrderCode()
 
-    const orderLockupPage = new OrderLockupPage(page)
     await orderLockupPage.searchOrder(order)
-
-
     await orderLockupPage.validateOrderNotFound(order)
   })
 })

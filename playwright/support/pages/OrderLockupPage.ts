@@ -47,7 +47,7 @@ export class OrderLockupPage {
   }
 
   async validateOrderDetails(order: OrderDetails) {
-      const snapshot =`
+    const snapshot = `
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
@@ -83,5 +83,9 @@ export class OrderLockupPage {
       - heading "Pedido não encontrado" [level=3]
       - paragraph: Verifique o número do pedido e tente novamente
       `)
+  }
+
+  async validatePageIsLoaded(title: string) {
+    await expect(this.page.getByRole('heading')).toContainText(title)
   }
 }
