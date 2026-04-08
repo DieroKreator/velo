@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 import { generateOrderCode } from '../support/helpers'
 
-import { OrderLockupPage } from '../support/pages/OrderLockupPage'
+import { OrderDetails, OrderLockupPage } from '../support/pages/OrderLockupPage'
 
 /// AAA - Arrange, Act, Assert
 
@@ -20,14 +20,14 @@ test.describe('Consulta de Pedido', () => {
   test('deve consultar um pedido aprovado', async ({ page }) => {
 
     // Test Data
-    const order = {
-      number: 'VLO-6E2J20',
+    const order: OrderDetails = {
+      number: 'VLO-GXNL53',
       status: 'APROVADO' as const,
-      color: 'Lunar White',
+      color: 'Glacier Blue',
       wheels: 'aero Wheels',
       customer: {
-        name: 'Fernando Papito',
-        email: 'papito@velo.dev'
+        name: 'Pepe Cannavaro',
+        email: 'peca@dev.co'
       },
       payment: 'À Vista'
     }
@@ -47,14 +47,14 @@ test.describe('Consulta de Pedido', () => {
   test('deve consultar um pedido reprovado', async ({ page }) => {
 
     // Test Data
-    const order = {
-      number: 'VLO-0LNFEA',
+    const order: OrderDetails = {
+      number: 'VLO-YX5W8U',
       status: 'REPROVADO' as const,
       color: 'Midnight Black',
       wheels: 'sport Wheels',
       customer: {
-        name: 'Steve Jobs',
-        email: 'jobs@apple.com'
+        name: 'Carla Gilles',
+        email: 'cagi@dev.com'
       },
       payment: 'À Vista'
     }
@@ -73,14 +73,14 @@ test.describe('Consulta de Pedido', () => {
   test('deve consultar um pedido em analise', async ({ page }) => {
 
     // Test Data
-    const order = {
-      number: 'VLO-412O06',
+    const order: OrderDetails = {
+      number: 'VLO-Q4VV1T',
       status: 'EM_ANALISE' as const,
       color: 'Lunar White',
       wheels: 'aero Wheels',
       customer: {
-        name: 'João da Silva',
-        email: 'joao@velo.dev'
+        name: 'Bruno Stampe',
+        email: 'bstampe@dev.br'
       },
       payment: 'À Vista'
     }
@@ -98,13 +98,12 @@ test.describe('Consulta de Pedido', () => {
 
   test('deve exibir mensagem quando o pedido não é encontrado', async ({ page }) => {
 
-    const order = generateOrderCode()
+    const order = 'XYZ-999-INVALIDO'
 
     const orderLockupPage = new OrderLockupPage(page)
     await orderLockupPage.searchOrder(order)
 
 
     await orderLockupPage.validateOrderNotFound(order)
-
   })
 })
