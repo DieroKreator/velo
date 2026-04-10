@@ -1,9 +1,9 @@
-import { test } from '../support/fixtures'
+import { expect, test } from '../support/fixtures'
 import { OrderDetails } from '../support/actions/orderLockupActions'
 import { generateOrderCode } from '../support/helpers'
 
 test.describe('Consulta de Pedido', () => {
-  
+
   test.beforeEach(async ({ app }) => {
     await app.orderLockup.open('Velô Sprint', 'Consultar Pedido')
   })
@@ -75,9 +75,18 @@ test.describe('Consulta de Pedido', () => {
     await app.orderLockup.validateOrderNotFound()
   })
 
-  test('deve exibir mensagem quando o código do ppedido está fora do padrão', async ({app}) => {
+  test('deve exibir mensagem quando o código do ppedido está fora do padrão', async ({ app }) => {
     const orderCode = 'XYZ-999-INVALIDO'
     await app.orderLockup.searchOrder(orderCode)
     await app.orderLockup.validateOrderNotFound()
+  })
+
+  test('deve manter o botão de busca desabilitado com campo vazio ou apenas espaços', async ({ app, page }) => {
+    const searchOrderBtn = page.getByRole('button', { name: 'Buscar Pedido' })
+    await expect(searchOrderBtn).toBeDisabled()
+
+    const orderInput = page.getByLabel('Número do pedido')
+    await orderInput.fill('    ')
+    await expect(searchOrderBtn).toBeDisabled()
   })
 })
