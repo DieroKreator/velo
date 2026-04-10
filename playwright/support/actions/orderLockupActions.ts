@@ -12,6 +12,10 @@ export type OrderDetails = {
 }
 
 export function createOrderLockupActions(page: Page) {
+
+  const orderInput = page.getByRole('textbox', { name: 'Número do Pedido' })
+  const searchOrderBtn = page.getByRole('button', { name: 'Buscar Pedido' })
+
   return {
     async open(heroTitle: string, orderLockupTitle: string) {
       await page.goto('/')
@@ -23,8 +27,8 @@ export function createOrderLockupActions(page: Page) {
     },
 
     async searchOrder(code: string) {
-      await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(code)
-      await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+      await orderInput.fill(code)
+      await searchOrderBtn.click()
     },
 
     async validateStatusBadge(status: OrderStatus) {
