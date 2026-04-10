@@ -17,6 +17,12 @@ export function createOrderLockupActions(page: Page) {
   const searchOrderBtn = page.getByRole('button', { name: 'Buscar Pedido' })
 
   return {
+
+    elements: {
+      orderInput,
+      searchOrderBtn
+    },
+
     async open(heroTitle: string, orderLockupTitle: string) {
       await page.goto('/')
       const titleLocator = page.getByTestId('hero-section').getByRole('heading')

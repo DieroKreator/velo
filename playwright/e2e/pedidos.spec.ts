@@ -81,11 +81,11 @@ test.describe('Consulta de Pedido', () => {
     await app.orderLockup.validateOrderNotFound()
   })
 
-  test('deve manter o botão de busca desabilitado com campo vazio ou apenas espaços', async ({ app, page }) => {
-    const searchOrderBtn = page.getByRole('button', { name: 'Buscar Pedido' })
+  test('deve manter o botão de busca desabilitado com campo vazio ou apenas espaços', async ({ app }) => {
+    const searchOrderBtn = app.orderLockup.elements.searchOrderBtn
     await expect(searchOrderBtn).toBeDisabled()
 
-    const orderInput = page.getByLabel('Número do pedido')
+    const orderInput = app.orderLockup.elements.orderInput
     await orderInput.fill('    ')
     await expect(searchOrderBtn).toBeDisabled()
   })
