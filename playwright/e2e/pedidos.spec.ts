@@ -1,6 +1,7 @@
 import { expect, test } from '../support/fixtures'
 import { OrderDetails } from '../support/actions/orderLockupActions'
 import { generateOrderCode } from '../support/helpers'
+import { deleteOrderByNumber } from '../support/database/orderRepository'
 
 test.describe('Consulta de Pedido', () => {
 
@@ -8,11 +9,12 @@ test.describe('Consulta de Pedido', () => {
     await app.orderLockup.open('Velô Sprint', 'Consultar Pedido')
   })
 
+  // VLO-GXNL53
+
   test('deve consultar um pedido aprovado', async ({ app }) => {
 
-    // Test Data
     const order: OrderDetails = {
-      number: 'VLO-GXNL53',
+      number: 'VLO-SE4R01',
       status: 'APROVADO' as const,
       color: 'Glacier Blue',
       wheels: 'aero Wheels',
@@ -23,6 +25,8 @@ test.describe('Consulta de Pedido', () => {
       payment: 'À Vista'
     }
 
+    await deleteOrderByNumber(order.number)
+
     await app.orderLockup.searchOrder(order.number)
     await app.orderLockup.validateOrderDetails(order)
     await app.orderLockup.validateStatusBadge(order.status)
@@ -31,9 +35,8 @@ test.describe('Consulta de Pedido', () => {
 
   test('deve consultar um pedido reprovado', async ({ app }) => {
 
-    // Test Data
     const order: OrderDetails = {
-      number: 'VLO-YX5W8U',
+      number: 'VLO-SE4R02',
       status: 'REPROVADO' as const,
       color: 'Midnight Black',
       wheels: 'sport Wheels',
@@ -44,6 +47,8 @@ test.describe('Consulta de Pedido', () => {
       payment: 'À Vista'
     }
 
+    await deleteOrderByNumber(order.number)
+
     await app.orderLockup.searchOrder(order.number)
     await app.orderLockup.validateOrderDetails(order)
     await app.orderLockup.validateStatusBadge(order.status)
@@ -53,7 +58,7 @@ test.describe('Consulta de Pedido', () => {
 
     // Test Data
     const order: OrderDetails = {
-      number: 'VLO-Q4VV1T',
+      number: 'VLO-SE4R03',
       status: 'EM_ANALISE' as const,
       color: 'Lunar White',
       wheels: 'aero Wheels',
@@ -63,6 +68,8 @@ test.describe('Consulta de Pedido', () => {
       },
       payment: 'À Vista'
     }
+
+    await deleteOrderByNumber(order.number)
 
     await app.orderLockup.searchOrder(order.number)
     await app.orderLockup.validateOrderDetails(order)
