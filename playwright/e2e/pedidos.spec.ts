@@ -1,15 +1,13 @@
 import { expect, test } from '../support/fixtures'
 import { OrderDetails } from '../support/actions/orderLockupActions'
 import { generateOrderCode } from '../support/helpers'
-import { deleteOrderByNumber } from '../support/database/orderRepository'
+import { deleteOrderByNumber, insertOrder } from '../support/database/orderRepository'
 
 test.describe('Consulta de Pedido', () => {
 
   test.beforeEach(async ({ app }) => {
     await app.orderLockup.open('Velô Sprint', 'Consultar Pedido')
   })
-
-  // VLO-GXNL53
 
   test('deve consultar um pedido aprovado', async ({ app }) => {
 
@@ -29,6 +27,7 @@ test.describe('Consulta de Pedido', () => {
     }
 
     await deleteOrderByNumber(order.number)
+    await insertOrder(order)
 
     await app.orderLockup.searchOrder(order.number)
     await app.orderLockup.validateOrderDetails(order)
@@ -54,6 +53,7 @@ test.describe('Consulta de Pedido', () => {
     }
 
     await deleteOrderByNumber(order.number)
+    await insertOrder(order)
 
     await app.orderLockup.searchOrder(order.number)
     await app.orderLockup.validateOrderDetails(order)
@@ -79,6 +79,7 @@ test.describe('Consulta de Pedido', () => {
     }
 
     await deleteOrderByNumber(order.number)
+    await insertOrder(order)
 
     await app.orderLockup.searchOrder(order.number)
     await app.orderLockup.validateOrderDetails(order)
