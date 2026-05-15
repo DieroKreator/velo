@@ -2,6 +2,7 @@ import { expect, test } from '../support/fixtures'
 import { OrderDetails } from '../support/actions/orderLockupActions'
 import { generateOrderCode } from '../support/helpers'
 import { deleteOrderByNumber, insertOrder } from '../support/database/orderRepository'
+import data from '../support/fixtures/orders.json'
 
 test.describe('Consulta de Pedido', () => {
 
@@ -11,20 +12,7 @@ test.describe('Consulta de Pedido', () => {
 
   test('deve consultar um pedido aprovado', async ({ app }) => {
 
-    const order: OrderDetails = {
-      number: 'VLO-SE4R01',
-      status: 'APROVADO' as const,
-      color: 'Glacier Blue',
-      wheels: 'aero Wheels',
-      customer: {
-        name: 'Pepe Cannavaro',
-        email: 'peca@dev.co',
-        document: '780.228.290-25',
-        phone: '(11) 99999-9999'
-      },
-      payment: 'À Vista',
-      total_price: '40000'
-    }
+    const order: OrderDetails = data.aprovado as OrderDetails
 
     await deleteOrderByNumber(order.number)
     await insertOrder(order)
