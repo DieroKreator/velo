@@ -2,7 +2,7 @@ import { expect, test } from '../support/fixtures'
 import { OrderDetails } from '../support/actions/orderLockupActions'
 import { generateOrderCode } from '../support/helpers'
 import { deleteOrderByNumber, insertOrder } from '../support/database/orderRepository'
-import data from '../support/fixtures/orders.json'
+import data from '../support/fixtures/orders.json' with { type: 'json' }
 
 test.describe('Consulta de Pedido', () => {
 
