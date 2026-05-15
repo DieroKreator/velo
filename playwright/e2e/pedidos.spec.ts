@@ -22,7 +22,8 @@ test.describe('Consulta de Pedido', () => {
         name: 'Pepe Cannavaro',
         email: 'peca@dev.co'
       },
-      payment: 'À Vista'
+      payment: 'À Vista',
+      total_price: '40000'
     }
 
     await deleteOrderByNumber(order.number)
@@ -44,7 +45,8 @@ test.describe('Consulta de Pedido', () => {
         name: 'Carla Gilles',
         email: 'cagi@dev.com'
       },
-      payment: 'À Vista'
+      payment: 'À Vista',
+      total_price: '40000'
     }
 
     await deleteOrderByNumber(order.number)
@@ -66,7 +68,8 @@ test.describe('Consulta de Pedido', () => {
         name: 'Bruno Stampe',
         email: 'bstampe@dev.br'
       },
-      payment: 'À Vista'
+      payment: 'À Vista',
+      total_price: '40000'
     }
 
     await deleteOrderByNumber(order.number)

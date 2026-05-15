@@ -9,6 +9,7 @@ export type OrderDetails = {
   wheels: string
   customer: { name: string; email: string }
   payment: string
+  total_price: string
 }
 
 export function createOrderLockupActions(page: Page) {
