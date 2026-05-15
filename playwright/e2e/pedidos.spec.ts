@@ -20,7 +20,9 @@ test.describe('Consulta de Pedido', () => {
       wheels: 'aero Wheels',
       customer: {
         name: 'Pepe Cannavaro',
-        email: 'peca@dev.co'
+        email: 'peca@dev.co',
+        document: '780.228.290-25',
+        phone: '(11) 99999-9999'
       },
       payment: 'À Vista',
       total_price: '40000'
@@ -43,7 +45,9 @@ test.describe('Consulta de Pedido', () => {
       wheels: 'sport Wheels',
       customer: {
         name: 'Carla Gilles',
-        email: 'cagi@dev.com'
+        email: 'cagi@dev.com',
+        document: '780.228.290-25',
+        phone: '(11) 99999-9999'
       },
       payment: 'À Vista',
       total_price: '40000'
@@ -66,7 +70,9 @@ test.describe('Consulta de Pedido', () => {
       wheels: 'aero Wheels',
       customer: {
         name: 'Bruno Stampe',
-        email: 'bstampe@dev.br'
+        email: 'bstampe@dev.br',
+        document: '780.228.290-25',
+        phone: '(11) 99999-9999'
       },
       payment: 'À Vista',
       total_price: '40000'
