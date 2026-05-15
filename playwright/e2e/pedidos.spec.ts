@@ -2,7 +2,7 @@ import { expect, test } from '../support/fixtures'
 import { OrderDetails } from '../support/actions/orderLockupActions'
 import { generateOrderCode } from '../support/helpers'
 import { deleteOrderByNumber, insertOrder } from '../support/database/orderRepository'
-import data from '../support/fixtures/orders.json' with { type: 'json' }
+import testData from '../support/fixtures/orders.json' with { type: 'json' }
 
 test.describe('Consulta de Pedido', () => {
 
@@ -12,7 +12,7 @@ test.describe('Consulta de Pedido', () => {
 
   test('deve consultar um pedido aprovado', async ({ app }) => {
 
-    const order: OrderDetails = data.aprovado as OrderDetails
+    const order: OrderDetails = testData.aprovado as OrderDetails
 
     await deleteOrderByNumber(order.number)
     await insertOrder(order)
@@ -25,20 +25,7 @@ test.describe('Consulta de Pedido', () => {
 
   test('deve consultar um pedido reprovado', async ({ app }) => {
 
-    const order: OrderDetails = {
-      number: 'VLO-SE4R02',
-      status: 'REPROVADO' as const,
-      color: 'Midnight Black',
-      wheels: 'sport Wheels',
-      customer: {
-        name: 'Carla Gilles',
-        email: 'cagi@dev.com',
-        document: '780.228.290-25',
-        phone: '(11) 99999-9999'
-      },
-      payment: 'À Vista',
-      total_price: '40000'
-    }
+    const order: OrderDetails = testData.reprovado as OrderDetails
 
     await deleteOrderByNumber(order.number)
     await insertOrder(order)
@@ -50,21 +37,7 @@ test.describe('Consulta de Pedido', () => {
 
   test('deve consultar um pedido em analise', async ({ app }) => {
 
-    // Test Data
-    const order: OrderDetails = {
-      number: 'VLO-SE4R03',
-      status: 'EM_ANALISE' as const,
-      color: 'Lunar White',
-      wheels: 'aero Wheels',
-      customer: {
-        name: 'Bruno Stampe',
-        email: 'bstampe@dev.br',
-        document: '780.228.290-25',
-        phone: '(11) 99999-9999'
-      },
-      payment: 'À Vista',
-      total_price: '40000'
-    }
+    const order: OrderDetails = testData.em_analise as OrderDetails
 
     await deleteOrderByNumber(order.number)
     await insertOrder(order)
