@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test'
 
-type OrderStatus = 'APROVADO' | 'REPROVADO' | 'EM_ANALISE'
+export type OrderStatus = 'APROVADO' | 'REPROVADO' | 'EM_ANALISE'
 
 export type OrderDetails = {
   number: string
@@ -12,57 +12,30 @@ export type OrderDetails = {
   total_price: string
 }
 
-export function createOrderLockupActions(page: Page) {
+export function createOrderLookupActions(page: Page) {
 
   const orderInput = page.getByRole('textbox', { name: 'Número do Pedido' })
-  const searchOrderBtn = page.getByRole('button', { name: 'Buscar Pedido' })
+  const searchButton = page.getByRole('button', { name: 'Buscar Pedido' })
 
   return {
 
     elements: {
       orderInput,
-      searchOrderBtn
+      searchButton
     },
 
-    async open(heroTitle: string, orderLockupTitle: string) {
+    async open() {
       await page.goto('/')
-      const titleLocator = page.getByTestId('hero-section').getByRole('heading')
-      await expect(titleLocator).toContainText(heroTitle)
+      const title = page.getByTestId('hero-section').getByRole('heading')
+      await expect(title).toContainText('Velô Sprint')
 
       await page.getByRole('link', { name: 'Consultar Pedido' }).click()
-      await expect(page.getByRole('heading')).toContainText(orderLockupTitle)
+      await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
     },
 
     async searchOrder(code: string) {
       await orderInput.fill(code)
-      await searchOrderBtn.click()
-    },
-
-    async validateStatusBadge(status: OrderStatus) {
-      const statusClasses = {
-        APROVADO: {
-          background: 'bg-green-100',
-          text: 'text-green-700',
-          icon: 'lucide-circle-check-big'
-        },
-        REPROVADO: {
-          background: 'bg-red-100',
-          text: 'text-red-700',
-          icon: 'lucide-circle-x'
-        },
-        EM_ANALISE: {
-          background: 'bg-amber-100',
-          text: 'text-amber-700',
-          icon: 'lucide-clock'
-        }
-      } as const
-
-      const classes = statusClasses[status]
-      const statusBadge = page.getByRole('status').filter({ hasText: status })
-
-      await expect(statusBadge).toHaveClass(new RegExp(classes.background))
-      await expect(statusBadge).toHaveClass(new RegExp(classes.text))
-      await expect(statusBadge.locator('svg')).toHaveClass(new RegExp(classes.icon))
+      await searchButton.click()
     },
 
     async validateOrderDetails(order: OrderDetails) {
@@ -93,9 +66,36 @@ export function createOrderLockupActions(page: Page) {
       - paragraph: /\\d+\\/\\d+\\/\\d+/
       - heading "Pagamento" [level=4]
       - paragraph: ${order.payment}
-      - paragraph: /R\\$ \\d+\\.\\d+,\\d+/`
+      - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
+      `
+      await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(snapshot)
+    },
 
-      void snapshot
+    async validateStatusBadge(status: OrderStatus) {
+      const statusClasses = {
+        APROVADO: {
+          background: 'bg-green-100',
+          text: 'text-green-700',
+          icon: 'lucide-circle-check-big',
+        },
+        REPROVADO: {
+          background: 'bg-red-100',
+          text: 'text-red-700',
+          icon: 'lucide-circle-x',
+        },
+        EM_ANALISE: {
+          background: 'bg-amber-100',
+          text: 'text-amber-700',
+          icon: 'lucide-clock',
+        },
+      } as const
+
+      const classes = statusClasses[status]
+      const statusBadge = page.getByRole('status').filter({ hasText: status })
+
+      await expect(statusBadge).toHaveClass(new RegExp(classes.background))
+      await expect(statusBadge).toHaveClass(new RegExp(classes.text))
+      await expect(statusBadge.locator('svg')).toHaveClass(new RegExp(classes.icon))
     },
 
     async validateOrderNotFound() {
@@ -104,6 +104,6 @@ export function createOrderLockupActions(page: Page) {
       - heading "Pedido não encontrado" [level=3]
       - paragraph: Verifique o número do pedido e tente novamente
       `)
-    }
+    },
   }
 }
