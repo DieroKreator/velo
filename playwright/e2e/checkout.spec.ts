@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Checkout - validações', () => {
+test.describe('Checkout', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/order');
     await expect(page.getByRole('heading', { name: 'Finalizar Pedido' })).toBeVisible();
