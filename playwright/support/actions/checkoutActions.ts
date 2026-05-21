@@ -4,25 +4,21 @@ export function createCheckoutActions(page: Page) {
 
     const terms = page.getByTestId('checkout-terms')
 
-    const nameAlert = page.getByTestId('error-name')
-    const surnameAlert = page.getByTestId('error-lastname')
-    const emailAlert = page.getByTestId('error-email')
-    const phoneAlert = page.getByTestId('error-phone')
-    const cpfAlert = page.getByTestId('error-document')
-    const storeAlert = page.getByTestId('error-store')
-    const termsAlert = page.getByTestId('error-terms')
+    const alerts = {
+        name: page.getByTestId('error-name'),
+        lastname: page.getByTestId('error-lastname'),
+        email: page.getByTestId('error-email'),
+        phone: page.getByTestId('error-phone'),
+        document: page.getByTestId('error-document'),
+        store: page.getByTestId('error-store'),
+        terms: page.getByTestId('error-terms')
+    }
 
     return {
 
         elements: {
             terms,
-            nameAlert,
-            surnameAlert,
-            emailAlert,
-            phoneAlert,
-            cpfAlert,
-            storeAlert,
-            termsAlert
+            alerts
         },
 
         async expectLoaded() {
