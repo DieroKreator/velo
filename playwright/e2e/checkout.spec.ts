@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../support/fixtures'
 
 test.describe('Checkout', () => {
 
@@ -8,8 +8,7 @@ test.describe('Checkout', () => {
   })
 
   test.describe('Validações de campos obrigatórios', () => {
-    test('deve validar obrigatoriedade de todos os campos em branco', async ({ page }) => {
-      const submit = page.getByRole('button', { name: 'Confirmar Pedido' })
+    test('deve validar obrigatoriedade de todos os campos em branco', async ({ page, app }) => {
 
       const nameAlert = page.locator('//label[text()="Nome"]/..//p')
       const surnameAlert = page.locator('//label[text()="Sobrenome"]/..//p')
@@ -20,7 +19,7 @@ test.describe('Checkout', () => {
       const termsAlert = page.locator('//label[@for="terms"]/following-sibling::p')
 
       // Act
-      await submit.click()
+      await app.checkout.submit()
 
       // Assert
       await expect(nameAlert).toHaveText('Nome deve ter pelo menos 2 caracteres')
@@ -32,41 +31,49 @@ test.describe('Checkout', () => {
       await expect(termsAlert).toHaveText('Aceite os termos')
     })
 
-    test('deve validar limite mínimo de caracteres para Nome e Sobrenome', async ({ page }) => {
-      const nome = page.getByTestId('checkout-name')
-      const sobrenome = page.getByTestId('checkout-surname')
-      const submit = page.getByRole('button', { name: 'Confirmar Pedido' })
-
+    test.only('deve validar limite mínimo de caracteres para Nome e Sobrenome', async ({ page, app }) => {
       const nameAlert = page.locator('//label[text()="Nome"]/..//p')
       const surnameAlert = page.locator('//label[text()="Sobrenome"]/..//p')
 
+      const customer = {
+        name: 'A',
+        lastname: 'B',
+        email: 'papito@teste.com',
+        document: '00000014141',
+        phone: '(11) 99999-9999'
+      }
+
       // Arrange
-      await nome.fill('A')
-      await sobrenome.fill('B')
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore('Velô Paulista')
+      await app.checkout.acceptTerms()
 
       // Act
-      await submit.click()
+      await app.checkout.submit()
 
       // Assert
       await expect(nameAlert).toHaveText('Nome deve ter pelo menos 2 caracteres')
       await expect(surnameAlert).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
     })
 
-    test('deve exibir erro para e-mail com formato inválido', async ({ page }) => {
-      const nome = page.getByTestId('checkout-name')
-      const sobrenome = page.getByTestId('checkout-surname')
-      const email = page.getByTestId('checkout-email')
-      const submit = page.getByRole('button', { name: 'Confirmar Pedido' })
-
+    test('deve exibir erro para e-mail com formato inválido', async ({ page, app }) => {
       const emailAlert = page.locator('//label[text()="Email"]/..//p')
 
+      const customer = {
+        name: 'Fernando',
+        lastname: 'Papito',
+        email: 'papito@.com',
+        document: '00000014141',
+        phone: '(11) 99999-9999'
+      }
+
       // Arrange
-      await nome.fill('João')
-      await sobrenome.fill('Silva')
-      await email.fill('cliente@.com')
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore('Velô Paulista')
+      await app.checkout.acceptTerms()
 
       // Act
-      await submit.click()
+      await app.checkout.submit()
 
       // Assert
       await expect(emailAlert).toHaveText('Email inválido')
@@ -88,27 +95,25 @@ test.describe('Checkout', () => {
       await expect(cpfAlert).toHaveText('CPF inválido')
     })
 
-    test('deve exigir o aceite dos termos ao finalizar com dados válidos', async ({ page }) => {
-      const email = page.getByTestId('checkout-email')
-      const telefone = page.getByTestId('checkout-phone')
-      const cpf = page.getByTestId('checkout-cpf')
-      const loja = page.getByTestId('checkout-store')
-      const termos = page.getByTestId('checkout-terms')
-      const submit = page.getByRole('button', { name: 'Confirmar Pedido' })
-
+    test('deve exigir o aceite dos termos ao finalizar com dados válidos', async ({ page, app }) => {
       const termsAlert = page.locator('//label[@for="terms"]/following-sibling::p')
 
-      // Arrange
-      await email.fill('joao.silva@email.com')
-      await telefone.fill('(11) 99999-9999')
-      await cpf.fill('529.982.247-25')
-      await loja.click()
-      await page.getByRole('option', { name: /Velô Paulista/ }).click()
+      const customer = {
+        name: 'Fernando',
+        lastname: 'Papito',
+        email: 'papito@test.com',
+        document: '00000014199',
+        phone: '(11) 99999-9999'
+      }
 
-      await expect(termos).not.toBeChecked() // Premissa inicial
+      // Arrange
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore('Velô Paulista')
+
+      await expect(app.checkout.elements.terms).not.toBeChecked()
 
       // Act
-      await submit.click()
+      await app.checkout.submit()
 
       // Assert
       await expect(termsAlert).toHaveText('Aceite os termos')
