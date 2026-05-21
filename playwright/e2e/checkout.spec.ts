@@ -8,24 +8,29 @@ test.describe('Checkout', () => {
   })
 
   test.describe('Validações de campos obrigatórios', () => {
+
+    let alerts: any
+
+    test.beforeEach(async ({ app }) => {
+      alerts = app.checkout.elements.alerts
+    })
+
     test('deve validar obrigatoriedade de todos os campos em branco', async ({ page, app }) => {
 
       // Act
       await app.checkout.submit()
 
       // Assert
-      await expect(app.checkout.elements.nameAlert).toHaveText('Nome deve ter pelo menos 2 caracteres')
-      await expect(app.checkout.elements.surnameAlert).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
-      await expect(app.checkout.elements.emailAlert).toHaveText('Email inválido')
-      await expect(app.checkout.elements.phoneAlert).toHaveText('Telefone inválido')
-      await expect(app.checkout.elements.cpfAlert).toHaveText('CPF inválido')
-      await expect(app.checkout.elements.storeAlert).toHaveText('Selecione uma loja')
-      await expect(app.checkout.elements.termsAlert).toHaveText('Aceite os termos')
+      await expect(alerts.name).toHaveText('Nome deve ter pelo menos 2 caracteres')
+      await expect(alerts.lastname).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
+      await expect(alerts.email).toHaveText('Email inválido')
+      await expect(alerts.phone).toHaveText('Telefone inválido')
+      await expect(alerts.document).toHaveText('CPF inválido')
+      await expect(alerts.store).toHaveText('Selecione uma loja')
+      await expect(alerts.terms).toHaveText('Aceite os termos')
     })
 
     test('deve validar limite mínimo de caracteres para Nome e Sobrenome', async ({ page, app }) => {
-      const nameAlert = page.getByTestId('error-name')
-      const surnameAlert = page.getByTestId('error-lastname')
 
       const customer = {
         name: 'A',
@@ -44,12 +49,11 @@ test.describe('Checkout', () => {
       await app.checkout.submit()
 
       // Assert
-      await expect(nameAlert).toHaveText('Nome deve ter pelo menos 2 caracteres')
-      await expect(surnameAlert).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
+      await expect(alerts.name).toHaveText('Nome deve ter pelo menos 2 caracteres')
+      await expect(alerts.lastname).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
     })
 
     test('deve exibir erro para e-mail com formato inválido', async ({ page, app }) => {
-      const emailAlert = page.getByTestId('error-email')
 
       const customer = {
         name: 'Fernando',
@@ -68,11 +72,10 @@ test.describe('Checkout', () => {
       await app.checkout.submit()
 
       // Assert
-      await expect(emailAlert).toHaveText('Email inválido')
+      await expect(alerts.email).toHaveText('Email inválido')
     })
 
     test('deve exibir erro para CPF inválido', async ({ page, app }) => {
-      const cpfAlert = page.getByTestId('error-document')
 
       const customer = {
         name: 'Fernando',
@@ -91,11 +94,10 @@ test.describe('Checkout', () => {
       await app.checkout.submit()
 
       // Assert
-      await expect(cpfAlert).toHaveText('CPF inválido')
+      await expect(alerts.document).toHaveText('CPF inválido')
     })
 
     test('deve exigir o aceite dos termos ao finalizar com dados válidos', async ({ page, app }) => {
-      const termsAlert = page.getByTestId('error-terms')
 
       const customer = {
         name: 'Fernando',
@@ -115,7 +117,7 @@ test.describe('Checkout', () => {
       await app.checkout.submit()
 
       // Assert
-      await expect(termsAlert).toHaveText('Aceite os termos')
+      await expect(app.checkout.elements.alerts.terms).toHaveText('Aceite os termos')
     })
   })
 })
