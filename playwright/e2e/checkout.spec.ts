@@ -10,25 +10,17 @@ test.describe('Checkout', () => {
   test.describe('Validações de campos obrigatórios', () => {
     test('deve validar obrigatoriedade de todos os campos em branco', async ({ page, app }) => {
 
-      const nameAlert = page.getByTestId('error-name')
-      const surnameAlert = page.getByTestId('error-lastname')
-      const emailAlert = page.getByTestId('error-email')
-      const phoneAlert = page.getByTestId('error-phone')
-      const cpfAlert = page.getByTestId('error-cpf')
-      const storeAlert = page.getByTestId('error-store')
-      const termsAlert = page.getByTestId('error-terms')
-
       // Act
       await app.checkout.submit()
 
       // Assert
-      await expect(nameAlert).toHaveText('Nome deve ter pelo menos 2 caracteres')
-      await expect(surnameAlert).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
-      await expect(emailAlert).toHaveText('Email inválido')
-      await expect(phoneAlert).toHaveText('Telefone inválido')
-      await expect(cpfAlert).toHaveText('CPF inválido')
-      await expect(storeAlert).toHaveText('Selecione uma loja')
-      await expect(termsAlert).toHaveText('Aceite os termos')
+      await expect(app.checkout.elements.nameAlert).toHaveText('Nome deve ter pelo menos 2 caracteres')
+      await expect(app.checkout.elements.surnameAlert).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
+      await expect(app.checkout.elements.emailAlert).toHaveText('Email inválido')
+      await expect(app.checkout.elements.phoneAlert).toHaveText('Telefone inválido')
+      await expect(app.checkout.elements.cpfAlert).toHaveText('CPF inválido')
+      await expect(app.checkout.elements.storeAlert).toHaveText('Selecione uma loja')
+      await expect(app.checkout.elements.termsAlert).toHaveText('Aceite os termos')
     })
 
     test('deve validar limite mínimo de caracteres para Nome e Sobrenome', async ({ page, app }) => {
@@ -80,7 +72,7 @@ test.describe('Checkout', () => {
     })
 
     test('deve exibir erro para CPF inválido', async ({ page, app }) => {
-      const cpfAlert = page.getByTestId('error-cpf')
+      const cpfAlert = page.getByTestId('error-document')
 
       const customer = {
         name: 'Fernando',
