@@ -10,13 +10,13 @@ test.describe('Checkout', () => {
   test.describe('Validações de campos obrigatórios', () => {
     test('deve validar obrigatoriedade de todos os campos em branco', async ({ page, app }) => {
 
-      const nameAlert = page.locator('//label[text()="Nome"]/..//p')
-      const surnameAlert = page.locator('//label[text()="Sobrenome"]/..//p')
-      const emailAlert = page.locator('//label[text()="Email"]/..//p')
-      const phoneAlert = page.locator('//label[text()="Telefone"]/..//p')
-      const cpfAlert = page.locator('//label[text()="CPF"]/..//p')
-      const storeAlert = page.locator('//label[text()="Loja para Retirada"]/..//p')
-      const termsAlert = page.locator('//label[@for="terms"]/following-sibling::p')
+      const nameAlert = page.getByTestId('error-name')
+      const surnameAlert = page.getByTestId('error-lastname')
+      const emailAlert = page.getByTestId('error-email')
+      const phoneAlert = page.getByTestId('error-phone')
+      const cpfAlert = page.getByTestId('error-cpf')
+      const storeAlert = page.getByTestId('error-store')
+      const termsAlert = page.getByTestId('error-terms')
 
       // Act
       await app.checkout.submit()
@@ -31,9 +31,9 @@ test.describe('Checkout', () => {
       await expect(termsAlert).toHaveText('Aceite os termos')
     })
 
-    test.only('deve validar limite mínimo de caracteres para Nome e Sobrenome', async ({ page, app }) => {
-      const nameAlert = page.locator('//label[text()="Nome"]/..//p')
-      const surnameAlert = page.locator('//label[text()="Sobrenome"]/..//p')
+    test('deve validar limite mínimo de caracteres para Nome e Sobrenome', async ({ page, app }) => {
+      const nameAlert = page.getByTestId('error-name')
+      const surnameAlert = page.getByTestId('error-lastname')
 
       const customer = {
         name: 'A',
@@ -57,7 +57,7 @@ test.describe('Checkout', () => {
     })
 
     test('deve exibir erro para e-mail com formato inválido', async ({ page, app }) => {
-      const emailAlert = page.locator('//label[text()="Email"]/..//p')
+      const emailAlert = page.getByTestId('error-email')
 
       const customer = {
         name: 'Fernando',
@@ -79,24 +79,31 @@ test.describe('Checkout', () => {
       await expect(emailAlert).toHaveText('Email inválido')
     })
 
-    test('deve exibir erro para CPF inválido', async ({ page }) => {
-      const cpf = page.getByTestId('checkout-cpf')
-      const submit = page.getByRole('button', { name: 'Confirmar Pedido' })
+    test('deve exibir erro para CPF inválido', async ({ page, app }) => {
+      const cpfAlert = page.getByTestId('error-cpf')
 
-      const cpfAlert = page.locator('//label[text()="CPF"]/..//p')
+      const customer = {
+        name: 'Fernando',
+        lastname: 'Papito',
+        email: 'papito@teste.com',
+        document: '00000014199',
+        phone: '(11) 99999-9999'
+      }
 
       // Arrange
-      await cpf.fill('123')
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore('Velô Paulista')
+      await app.checkout.acceptTerms()
 
       // Act
-      await submit.click()
+      await app.checkout.submit()
 
       // Assert
       await expect(cpfAlert).toHaveText('CPF inválido')
     })
 
     test('deve exigir o aceite dos termos ao finalizar com dados válidos', async ({ page, app }) => {
-      const termsAlert = page.locator('//label[@for="terms"]/following-sibling::p')
+      const termsAlert = page.getByTestId('error-terms')
 
       const customer = {
         name: 'Fernando',
