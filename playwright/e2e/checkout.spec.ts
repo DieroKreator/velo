@@ -15,7 +15,7 @@ test.describe('Checkout', () => {
       alerts = app.checkout.elements.alerts
     })
 
-    test('deve validar obrigatoriedade de todos os campos em branco', async ({ page, app }) => {
+    test('deve validar obrigatoriedade de todos os campos em branco', async ({ app }) => {
 
       // Act
       await app.checkout.submit()
@@ -30,7 +30,7 @@ test.describe('Checkout', () => {
       await expect(alerts.terms).toHaveText('Aceite os termos')
     })
 
-    test('deve validar limite mínimo de caracteres para Nome e Sobrenome', async ({ page, app }) => {
+    test('deve validar limite mínimo de caracteres para Nome e Sobrenome', async ({ app }) => {
 
       const customer = {
         name: 'A',
@@ -53,7 +53,7 @@ test.describe('Checkout', () => {
       await expect(alerts.lastname).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
     })
 
-    test('deve exibir erro para e-mail com formato inválido', async ({ page, app }) => {
+    test('deve exibir erro para e-mail com formato inválido', async ({ app }) => {
 
       const customer = {
         name: 'Fernando',
@@ -75,7 +75,7 @@ test.describe('Checkout', () => {
       await expect(alerts.email).toHaveText('Email inválido')
     })
 
-    test('deve exibir erro para CPF inválido', async ({ page, app }) => {
+    test('deve exibir erro para CPF inválido', async ({ app }) => {
 
       const customer = {
         name: 'Fernando',
@@ -97,7 +97,7 @@ test.describe('Checkout', () => {
       await expect(alerts.document).toHaveText('CPF inválido')
     })
 
-    test('deve exigir o aceite dos termos ao finalizar com dados válidos', async ({ page, app }) => {
+    test('deve exigir o aceite dos termos ao finalizar com dados válidos', async ({ app }) => {
 
       const customer = {
         name: 'Fernando',
