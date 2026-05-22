@@ -1,4 +1,5 @@
 import { test, expect } from '../support/fixtures'
+import { deleteOrderByCpf, deleteOrderByEmail } from '../support/database/orderRepository'
 
 test.describe('Checkout', () => {
 
@@ -125,7 +126,7 @@ test.describe('Checkout', () => {
       const customer = {
         name: 'John',
         lastname: 'Doe',
-        email: 'john.doe@teste.com',
+        email: 'john.doe@example.com',
         document: '05366127068',
         phone: '(11) 99999-9999',
         store: 'Velô Paulista',
@@ -133,7 +134,11 @@ test.describe('Checkout', () => {
         totalPrice: 'R$ 40.000,00'
       }
 
+      await deleteOrderByEmail(customer.email)
+      await deleteOrderByCpf(customer.document)
+
       // Arrange
+
       await page.goto('/')
       await page.getByRole('link', { name: /Configure Agora/i }).click()
 
