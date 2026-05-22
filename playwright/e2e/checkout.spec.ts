@@ -9,14 +9,15 @@ test.describe('Checkout', () => {
 
   test.describe('Validações de campos obrigatórios', () => {
 
+
     let alerts: any
 
     test.beforeEach(async ({ app }) => {
       alerts = app.checkout.elements.alerts
     })
 
-    test('deve validar obrigatoriedade de todos os campos em branco', async ({ app }) => {
 
+    test('deve validar obrigatoriedade de todos os campos em branco', async ({ app }) => {
       // Act
       await app.checkout.submit()
 
@@ -54,7 +55,6 @@ test.describe('Checkout', () => {
     })
 
     test('deve exibir erro para e-mail com formato inválido', async ({ app }) => {
-
       const customer = {
         name: 'Fernando',
         lastname: 'Papito',
@@ -80,7 +80,7 @@ test.describe('Checkout', () => {
       const customer = {
         name: 'Fernando',
         lastname: 'Papito',
-        email: 'papito@teste.com',
+        email: 'papito@test.com',
         document: '00000014199',
         phone: '(11) 99999-9999'
       }
@@ -117,7 +117,7 @@ test.describe('Checkout', () => {
       await app.checkout.submit()
 
       // Assert
-      await expect(app.checkout.elements.alerts.terms).toHaveText('Aceite os termos')
+      await expect(alerts.terms).toHaveText('Aceite os termos')
     })
   })
 })
