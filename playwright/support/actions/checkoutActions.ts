@@ -26,6 +26,11 @@ export function createCheckoutActions(page: Page) {
             await expect(page.getByRole('heading', { name: 'Finalizar Pedido' })).toBeVisible()
         },
 
+        async selectPaymentMethod(paymentMethod: string) {
+            await expect(page.getByRole('button', { name: paymentMethod })).toBeVisible()
+            await page.getByRole('button', { name: paymentMethod }).click()
+        },
+
         async expectSummaryTotal(price: string) {
             await expect(page.getByTestId('summary-total-price')).toHaveText(price)
         },
