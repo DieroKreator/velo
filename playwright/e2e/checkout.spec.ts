@@ -1,5 +1,5 @@
 import { test, expect } from '../support/fixtures'
-import { deleteOrderByCpf, deleteOrderByEmail } from '../support/database/orderRepository'
+import { deleteOrderByEmail } from '../support/database/orderRepository'
 
 test.describe('Checkout', () => {
 
@@ -135,7 +135,6 @@ test.describe('Checkout', () => {
       }
 
       await deleteOrderByEmail(customer.email)
-      await deleteOrderByCpf(customer.document)
 
       // Arrange
 
