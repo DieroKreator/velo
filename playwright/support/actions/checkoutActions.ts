@@ -14,6 +14,7 @@ export function createCheckoutActions(page: Page) {
         terms: page.getByTestId('error-terms')
     }
 
+
     return {
 
         elements: {
