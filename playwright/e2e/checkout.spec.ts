@@ -158,5 +158,43 @@ test.describe('Checkout', () => {
       await expect(page).toHaveURL(/\/success/)
       await expect(page.getByRole('heading', { name: 'Pedido Aprovado!' })).toBeVisible()
     })
+
+    test('deve aprovar automáticamente o crédito quando o score do CPF for maior que 700 no financiamento', async ({ page, app }) => {
+
+      const customer = {
+        name: 'Steve',
+        lastname: 'Doe',
+        email: 'steve.doe@velo.dev',
+        document: '65493881047',
+        phone: '(11) 99999-9999',
+        store: 'Velô Paulista',
+        paymentMethod: 'Financiamento',
+        totalPrice: 'R$ 40.000,00'
+      }
+
+      await deleteOrderByEmail(customer.email)
+
+      // Arrange
+
+      await page.goto('/')
+      await page.getByRole('link', { name: /Configure Agora/i }).click()
+
+      await app.configurator.expectPrice(customer.totalPrice)
+      await app.configurator.finishConfigurator()
+      await app.checkout.expectLoaded()
+
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore(customer.store)
+
+      //Act
+      await app.checkout.selectPaymentMethod(customer.paymentMethod)
+      // await app.checkout.expectSummaryTotal(customer.totalPrice)
+      await app.checkout.acceptTerms()
+      await app.checkout.submit()
+
+      // Assert
+      await expect(page).toHaveURL(/\/success/)
+      await expect(page.getByRole('heading', { name: 'Pedido Aprovado!' })).toBeVisible()
+    })
   })
 })
