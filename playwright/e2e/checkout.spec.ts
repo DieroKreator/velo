@@ -174,7 +174,16 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      // Arrange
+      await page.route('**/functions/v1/credit-analysis', async route => {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            status: 'Done',
+            score: 710,
+          }),
+        })
+      })
 
       await page.goto('/')
       await page.getByRole('link', { name: /Configure Agora/i }).click()
