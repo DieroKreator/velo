@@ -138,8 +138,7 @@ test.describe('Checkout', () => {
 
       // Arrange
 
-      await page.goto('/')
-      await page.getByRole('link', { name: /Configure Agora/i }).click()
+      await app.home.startConfigurator()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -176,8 +175,7 @@ test.describe('Checkout', () => {
 
       await app.checkout.mockCreditAnalysisScore(710)
 
-      await page.goto('/')
-      await page.getByRole('link', { name: /Configure Agora/i }).click()
+      await app.home.startConfigurator()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -214,8 +212,7 @@ test.describe('Checkout', () => {
 
       await app.checkout.mockCreditAnalysisScore(600)
 
-      await page.goto('/')
-      await page.getByRole('link', { name: /Configure Agora/i }).click()
+      await app.home.startConfigurator()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -251,8 +248,7 @@ test.describe('Checkout', () => {
 
       await app.checkout.mockCreditAnalysisScore(500)
 
-      await page.goto('/')
-      await page.getByRole('link', { name: /Configure Agora/i }).click()
+      await app.home.startConfigurator()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -287,8 +283,7 @@ test.describe('Checkout', () => {
 
       await app.checkout.mockCreditAnalysisScore(500)
 
-      await page.goto('/')
-      await page.getByRole('link', { name: /Configure Agora/i }).click()
+      await app.home.startConfigurator()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -324,8 +319,7 @@ test.describe('Checkout', () => {
 
       await app.checkout.mockCreditAnalysisScore(450)
 
-      await page.goto('/')
-      await page.getByRole('link', { name: /Configure Agora/i }).click()
+      await app.home.startConfigurator()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -361,8 +355,7 @@ test.describe('Checkout', () => {
 
       await app.checkout.mockCreditAnalysisScore(300)
 
-      await page.goto('/')
-      await page.getByRole('link', { name: /Configure Agora/i }).click()
+      await app.home.startConfigurator()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
