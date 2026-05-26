@@ -174,16 +174,7 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      await page.route('**/functions/v1/credit-analysis', async route => {
-        await route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({
-            status: 'Done',
-            score: 710,
-          }),
-        })
-      })
+      await app.checkout.mockCreditAnalysisScore(710)
 
       await page.goto('/')
       await page.getByRole('link', { name: /Configure Agora/i }).click()
@@ -221,16 +212,7 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      await page.route('**/functions/v1/credit-analysis', async route => {
-        await route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({
-            status: 'Done',
-            score: 600,
-          }),
-        })
-      })
+      await app.checkout.mockCreditAnalysisScore(600)
 
       await page.goto('/')
       await page.getByRole('link', { name: /Configure Agora/i }).click()
@@ -250,6 +232,152 @@ test.describe('Checkout', () => {
       // Assert
       await expect(page).toHaveURL(/\/success/)
       await expect(page.getByRole('heading', { name: 'Pedido em Análise!' })).toBeVisible()
+    })
+
+    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento sem entrada', async ({ page, app }) => {
+
+      const customer = {
+        name: 'Clark',
+        lastname: 'Kent',
+        email: 'clark@dailyplanet.com',
+        document: '52998224725',
+        phone: '(11) 99999-9999',
+        store: 'Velô Paulista',
+        paymentMethod: 'Financiamento',
+        totalPrice: 'R$ 40.000,00'
+      }
+
+      await deleteOrderByEmail(customer.email)
+
+      await app.checkout.mockCreditAnalysisScore(500)
+
+      await page.goto('/')
+      await page.getByRole('link', { name: /Configure Agora/i }).click()
+
+      await app.configurator.expectPrice(customer.totalPrice)
+      await app.configurator.finishConfigurator()
+      await app.checkout.expectLoaded()
+
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore(customer.store)
+
+      await app.checkout.selectPaymentMethod(customer.paymentMethod)
+      await app.checkout.acceptTerms()
+      await app.checkout.submit()
+
+      await expect(page).toHaveURL(/\/success/)
+      await expect(page.getByRole('heading', { name: /Crédito Reprovado/i })).toBeVisible()
+    })
+
+    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada menor que 50%', async ({ page, app }) => {
+
+      const customer = {
+        name: 'Diana',
+        lastname: 'Prince',
+        email: 'diana@themiscira.com',
+        document: '11144477735',
+        phone: '(11) 99999-9999',
+        store: 'Velô Paulista',
+        paymentMethod: 'Financiamento',
+        totalPrice: 'R$ 40.000,00',
+        downPayment: '10000'
+      }
+
+      await deleteOrderByEmail(customer.email)
+
+      await app.checkout.mockCreditAnalysisScore(500)
+
+      await page.goto('/')
+      await page.getByRole('link', { name: /Configure Agora/i }).click()
+
+      await app.configurator.expectPrice(customer.totalPrice)
+      await app.configurator.finishConfigurator()
+      await app.checkout.expectLoaded()
+
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore(customer.store)
+
+      await app.checkout.selectPaymentMethod(customer.paymentMethod)
+      await app.checkout.fillDownPayment(customer.downPayment)
+      await app.checkout.acceptTerms()
+      await app.checkout.submit()
+
+      await expect(page).toHaveURL(/\/success/)
+      await expect(page.getByRole('heading', { name: /Crédito Reprovado/i })).toBeVisible()
+    })
+
+    test('deve aprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada igual a 50%', async ({ page, app }) => {
+
+      const customer = {
+        name: 'Richard',
+        lastname: 'Raptor',
+        email: 'richard.raptor@velo.dev',
+        document: '39434745004',
+        phone: '(11) 99999-9999',
+        store: 'Velô Paulista',
+        paymentMethod: 'Financiamento',
+        totalPrice: 'R$ 40.000,00',
+        downPayment: '20000'
+      }
+
+      await deleteOrderByEmail(customer.email)
+
+      await app.checkout.mockCreditAnalysisScore(450)
+
+      await page.goto('/')
+      await page.getByRole('link', { name: /Configure Agora/i }).click()
+
+      await app.configurator.expectPrice(customer.totalPrice)
+      await app.configurator.finishConfigurator()
+      await app.checkout.expectLoaded()
+
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore(customer.store)
+
+      await app.checkout.selectPaymentMethod(customer.paymentMethod)
+      await app.checkout.fillDownPayment(customer.downPayment)
+      await app.checkout.acceptTerms()
+      await app.checkout.submit()
+
+      await expect(page).toHaveURL(/\/success/)
+      await expect(page.getByRole('heading', { name: /Pedido Aprovado/i })).toBeVisible()
+    })
+
+    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada maior que 50%', async ({ page, app }) => {
+
+      const customer = {
+        name: 'Axl',
+        lastname: 'Rose',
+        email: 'alx@gnr.com',
+        document: '79327557000',
+        phone: '(11) 99999-9999',
+        store: 'Velô Paulista',
+        paymentMethod: 'Financiamento',
+        totalPrice: 'R$ 40.000,00',
+        downPayment: '30000'
+      }
+
+      await deleteOrderByEmail(customer.email)
+
+      await app.checkout.mockCreditAnalysisScore(300)
+
+      await page.goto('/')
+      await page.getByRole('link', { name: /Configure Agora/i }).click()
+
+      await app.configurator.expectPrice(customer.totalPrice)
+      await app.configurator.finishConfigurator()
+      await app.checkout.expectLoaded()
+
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore(customer.store)
+
+      await app.checkout.selectPaymentMethod(customer.paymentMethod)
+      await app.checkout.fillDownPayment(customer.downPayment)
+      await app.checkout.acceptTerms()
+      await app.checkout.submit()
+
+      await expect(page).toHaveURL(/\/success/)
+      await expect(page.getByRole('heading', { name: /Pedido Aprovado/i })).toBeVisible()
     })
   })
 })
