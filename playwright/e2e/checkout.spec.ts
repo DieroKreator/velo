@@ -16,10 +16,8 @@ test.describe('Checkout', () => {
 
 
     test('deve validar obrigatoriedade de todos os campos em branco', async ({ app }) => {
-      // Act
       await app.checkout.submit()
 
-      // Assert
       await expect(alerts.name).toHaveText('Nome deve ter pelo menos 2 caracteres')
       await expect(alerts.lastname).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
       await expect(alerts.email).toHaveText('Email inválido')
@@ -39,15 +37,12 @@ test.describe('Checkout', () => {
         phone: '(11) 99999-9999'
       }
 
-      // Arrange
       await app.checkout.fillCustomerlData(customer)
       await app.checkout.selectStore('Velô Paulista')
       await app.checkout.acceptTerms()
 
-      // Act
       await app.checkout.submit()
 
-      // Assert
       await expect(alerts.name).toHaveText('Nome deve ter pelo menos 2 caracteres')
       await expect(alerts.lastname).toHaveText('Sobrenome deve ter pelo menos 2 caracteres')
     })
@@ -61,15 +56,12 @@ test.describe('Checkout', () => {
         phone: '(11) 99999-9999'
       }
 
-      // Arrange
       await app.checkout.fillCustomerlData(customer)
       await app.checkout.selectStore('Velô Paulista')
       await app.checkout.acceptTerms()
 
-      // Act
       await app.checkout.submit()
 
-      // Assert
       await expect(alerts.email).toHaveText('Email inválido')
     })
 
@@ -83,15 +75,12 @@ test.describe('Checkout', () => {
         phone: '(11) 99999-9999'
       }
 
-      // Arrange
       await app.checkout.fillCustomerlData(customer)
       await app.checkout.selectStore('Velô Paulista')
       await app.checkout.acceptTerms()
 
-      // Act
       await app.checkout.submit()
 
-      // Assert
       await expect(alerts.document).toHaveText('CPF inválido')
     })
 
@@ -105,16 +94,13 @@ test.describe('Checkout', () => {
         phone: '(11) 99999-9999'
       }
 
-      // Arrange
       await app.checkout.fillCustomerlData(customer)
       await app.checkout.selectStore('Velô Paulista')
 
       await expect(app.checkout.elements.terms).not.toBeChecked()
 
-      // Act
       await app.checkout.submit()
 
-      // Assert
       await expect(alerts.terms).toHaveText('Aceite os termos')
     })
   })
@@ -136,7 +122,6 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      // Arrange
 
       await app.home.startConfigurator()
 
@@ -147,13 +132,11 @@ test.describe('Checkout', () => {
       await app.checkout.fillCustomerlData(customer)
       await app.checkout.selectStore(customer.store)
 
-      //Act
       await app.checkout.selectPaymentMethod(customer.paymentMethod)
       await app.checkout.expectSummaryTotal(customer.totalPrice)
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      // Assert
       await app.success.expectApproved()
     })
 
@@ -183,13 +166,10 @@ test.describe('Checkout', () => {
       await app.checkout.fillCustomerlData(customer)
       await app.checkout.selectStore(customer.store)
 
-      //Act
       await app.checkout.selectPaymentMethod(customer.paymentMethod)
-      // await app.checkout.expectSummaryTotal(customer.totalPrice)
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      // Assert
       await app.success.expectApproved()
     })
 
@@ -219,12 +199,10 @@ test.describe('Checkout', () => {
       await app.checkout.fillCustomerlData(customer)
       await app.checkout.selectStore(customer.store)
 
-      //Act
       await app.checkout.selectPaymentMethod(customer.paymentMethod)
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      // Assert
       await app.success.expectInReview()
     })
 
