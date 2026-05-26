@@ -154,8 +154,7 @@ test.describe('Checkout', () => {
       await app.checkout.submit()
 
       // Assert
-      await expect(page).toHaveURL(/\/success/)
-      await expect(page.getByRole('heading', { name: 'Pedido Aprovado!' })).toBeVisible()
+      await app.success.expectApproved()
     })
 
     test('deve aprovar automáticamente o crédito quando o score do CPF for maior que 700 no financiamento', async ({ page, app }) => {
@@ -191,8 +190,7 @@ test.describe('Checkout', () => {
       await app.checkout.submit()
 
       // Assert
-      await expect(page).toHaveURL(/\/success/)
-      await expect(page.getByRole('heading', { name: 'Pedido Aprovado!' })).toBeVisible()
+      await app.success.expectApproved()
     })
 
     test('deve encaminhar para análise de crédito quando o score do CPF for entre 501 e 700 no financiamento', async ({ page, app }) => {
@@ -227,8 +225,7 @@ test.describe('Checkout', () => {
       await app.checkout.submit()
 
       // Assert
-      await expect(page).toHaveURL(/\/success/)
-      await expect(page.getByRole('heading', { name: 'Pedido em Análise!' })).toBeVisible()
+      await app.success.expectInReview()
     })
 
     test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento sem entrada', async ({ page, app }) => {
@@ -261,8 +258,7 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await expect(page).toHaveURL(/\/success/)
-      await expect(page.getByRole('heading', { name: /Crédito Reprovado/i })).toBeVisible()
+      await app.success.expectRejected()
     })
 
     test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada menor que 50%', async ({ page, app }) => {
@@ -297,8 +293,7 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await expect(page).toHaveURL(/\/success/)
-      await expect(page.getByRole('heading', { name: /Crédito Reprovado/i })).toBeVisible()
+      await app.success.expectRejected()
     })
 
     test('deve aprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada igual a 50%', async ({ page, app }) => {
@@ -333,8 +328,7 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await expect(page).toHaveURL(/\/success/)
-      await expect(page.getByRole('heading', { name: /Pedido Aprovado/i })).toBeVisible()
+      await app.success.expectApproved()
     })
 
     test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada maior que 50%', async ({ page, app }) => {
@@ -369,8 +363,7 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await expect(page).toHaveURL(/\/success/)
-      await expect(page.getByRole('heading', { name: /Pedido Aprovado/i })).toBeVisible()
+      await app.success.expectApproved()
     })
   })
 })

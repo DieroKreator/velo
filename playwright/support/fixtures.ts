@@ -4,12 +4,14 @@ import { createOrderLookupActions } from './actions/orderLookupActions'
 import { createConfiguratorActions } from './actions/configuratorActions'
 import { createCheckoutActions } from './actions/checkoutActions'
 import { createHomeActions } from './actions/homeActions'
+import { createSuccessActions } from './actions/successActions'
 
 type App = {
   orderLookup: ReturnType<typeof createOrderLookupActions>
   configurator: ReturnType<typeof createConfiguratorActions>
   checkout: ReturnType<typeof createCheckoutActions>
   home: ReturnType<typeof createHomeActions>
+  success: ReturnType<typeof createSuccessActions>
 }
 
 export const test = base.extend<{ app: App }>({
@@ -18,7 +20,8 @@ export const test = base.extend<{ app: App }>({
       orderLookup: createOrderLookupActions(page),
       configurator: createConfiguratorActions(page),
       checkout: createCheckoutActions(page),
-      home: createHomeActions(page)
+      home: createHomeActions(page),
+      success: createSuccessActions(page)
     }
     await use(app)
   }
