@@ -31,6 +31,10 @@ export function createCheckoutActions(page: Page) {
             await page.getByRole('button', { name: paymentMethod }).click()
         },
 
+        async fillDownPayment(value: string) {
+            await page.getByTestId('input-entry-value').fill(value)
+        },
+
         async expectSummaryTotal(price: string) {
             await expect(page.getByTestId('summary-total-price')).toHaveText(price)
         },
