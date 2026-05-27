@@ -122,8 +122,7 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-
-      await app.home.startConfigurator()
+      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -157,7 +156,7 @@ test.describe('Checkout', () => {
 
       await app.mock.creditAnalysis(710)
 
-      await app.home.startConfigurator()
+      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -190,7 +189,7 @@ test.describe('Checkout', () => {
 
       await app.mock.creditAnalysis(600)
 
-      await app.home.startConfigurator()
+      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -223,7 +222,7 @@ test.describe('Checkout', () => {
 
       await app.mock.creditAnalysis(500)
 
-      await app.home.startConfigurator()
+      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -257,7 +256,7 @@ test.describe('Checkout', () => {
 
       await app.mock.creditAnalysis(500)
 
-      await app.home.startConfigurator()
+      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -292,7 +291,7 @@ test.describe('Checkout', () => {
 
       await app.mock.creditAnalysis(450)
 
-      await app.home.startConfigurator()
+      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -327,7 +326,7 @@ test.describe('Checkout', () => {
 
       await app.mock.creditAnalysis(300)
 
-      await app.home.startConfigurator()
+      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
