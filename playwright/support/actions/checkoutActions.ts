@@ -14,7 +14,6 @@ export function createCheckoutActions(page: Page) {
         terms: page.getByTestId('error-terms')
     }
 
-
     return {
 
         elements: {
@@ -64,19 +63,6 @@ export function createCheckoutActions(page: Page) {
 
         async submit() {
             await page.getByRole('button', { name: 'Confirmar Pedido' }).click()
-        },
-
-        async mockCreditAnalysisScore(score: number) {
-            await page.route('**/functions/v1/credit-analysis', async route => {
-                await route.fulfill({
-                    status: 200,
-                    contentType: 'application/json',
-                    body: JSON.stringify({
-                        status: 'Done',
-                        score: score,
-                    }),
-                })
-            })
-        },
+        }
     }
 }

@@ -155,7 +155,7 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      await app.checkout.mockCreditAnalysisScore(710)
+      await app.mock.creditAnalysis(710)
 
       await app.home.startConfigurator()
 
@@ -188,7 +188,7 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      await app.checkout.mockCreditAnalysisScore(600)
+      await app.mock.creditAnalysis(600)
 
       await app.home.startConfigurator()
 
@@ -221,7 +221,7 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      await app.checkout.mockCreditAnalysisScore(500)
+      await app.mock.creditAnalysis(500)
 
       await app.home.startConfigurator()
 
@@ -255,7 +255,7 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      await app.checkout.mockCreditAnalysisScore(500)
+      await app.mock.creditAnalysis(500)
 
       await app.home.startConfigurator()
 
@@ -290,7 +290,7 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      await app.checkout.mockCreditAnalysisScore(450)
+      await app.mock.creditAnalysis(450)
 
       await app.home.startConfigurator()
 
@@ -325,7 +325,7 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-      await app.checkout.mockCreditAnalysisScore(300)
+      await app.mock.creditAnalysis(300)
 
       await app.home.startConfigurator()
 
