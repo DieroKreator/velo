@@ -107,6 +107,10 @@ test.describe('Checkout', () => {
 
   test.describe('Pagamento e Confirmação', () => {
 
+    test.beforeEach(async ({ app }) => {
+      await app.hero.open()
+    })
+
     test('deve criar um pedido com sucesso para pagamento à vista', async ({ page, app }) => {
 
       const customer = {
@@ -121,8 +125,6 @@ test.describe('Checkout', () => {
       }
 
       await deleteOrderByEmail(customer.email)
-
-      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -156,8 +158,6 @@ test.describe('Checkout', () => {
 
       await app.mock.creditAnalysis(710)
 
-      await app.hero.open()
-
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
       await app.checkout.expectLoaded()
@@ -188,8 +188,6 @@ test.describe('Checkout', () => {
       await deleteOrderByEmail(customer.email)
 
       await app.mock.creditAnalysis(600)
-
-      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -222,8 +220,6 @@ test.describe('Checkout', () => {
 
       await app.mock.creditAnalysis(500)
 
-      await app.hero.open()
-
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
       await app.checkout.expectLoaded()
@@ -255,8 +251,6 @@ test.describe('Checkout', () => {
       await deleteOrderByEmail(customer.email)
 
       await app.mock.creditAnalysis(500)
-
-      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
@@ -291,8 +285,6 @@ test.describe('Checkout', () => {
 
       await app.mock.creditAnalysis(450)
 
-      await app.hero.open()
-
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
       await app.checkout.expectLoaded()
@@ -325,8 +317,6 @@ test.describe('Checkout', () => {
       await deleteOrderByEmail(customer.email)
 
       await app.mock.creditAnalysis(300)
-
-      await app.hero.open()
 
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfigurator()
