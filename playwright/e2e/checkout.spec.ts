@@ -111,7 +111,7 @@ test.describe('Checkout', () => {
       await app.hero.open()
     })
 
-    test('deve criar um pedido com sucesso para pagamento à vista', async ({ page, app }) => {
+    test('deve criar um pedido com sucesso para pagamento à vista', async ({ app }) => {
 
       const customer = {
         name: 'John',
@@ -138,10 +138,10 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await app.success.expectApproved()
+      await app.checkout.expectResult('Pedido Aprovado')
     })
 
-    test('deve aprovar automáticamente o crédito quando o score do CPF for maior que 700 no financiamento', async ({ page, app }) => {
+    test('deve aprovar automáticamente o crédito quando o score do CPF for maior que 700 no financiamento', async ({ app }) => {
 
       const customer = {
         name: 'Steve',
@@ -169,10 +169,10 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await app.success.expectApproved()
+      await app.checkout.expectResult('Pedido Aprovado')
     })
 
-    test('deve encaminhar para análise de crédito quando o score do CPF for entre 501 e 700 no financiamento', async ({ page, app }) => {
+    test('deve encaminhar para análise de crédito quando o score do CPF for entre 501 e 700 no financiamento', async ({ app }) => {
 
       const customer = {
         name: 'Steve',
@@ -200,10 +200,10 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await app.success.expectInReview()
+      await app.checkout.expectResult('Em Análise')
     })
 
-    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento sem entrada', async ({ page, app }) => {
+    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento sem entrada', async ({ app }) => {
 
       const customer = {
         name: 'Clark',
@@ -231,10 +231,10 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await app.success.expectRejected()
+      await app.checkout.expectResult('Pedido Reprovado')
     })
 
-    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada menor que 50%', async ({ page, app }) => {
+    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada menor que 50%', async ({ app }) => {
 
       const customer = {
         name: 'Diana',
@@ -264,10 +264,10 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await app.success.expectRejected()
+      await app.checkout.expectResult('Pedido Reprovado')
     })
 
-    test('deve aprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada igual a 50%', async ({ page, app }) => {
+    test('deve aprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada igual a 50%', async ({ app }) => {
 
       const customer = {
         name: 'Richard',
@@ -297,10 +297,10 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await app.success.expectApproved()
+      await app.checkout.expectResult('Pedido Aprovado')
     })
 
-    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada maior que 50%', async ({ page, app }) => {
+    test('deve aprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada maior que 50%', async ({ app }) => {
 
       const customer = {
         name: 'Axl',
@@ -330,7 +330,7 @@ test.describe('Checkout', () => {
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
-      await app.success.expectApproved()
+      await app.checkout.expectResult('Pedido Aprovado!')
     })
   })
 })

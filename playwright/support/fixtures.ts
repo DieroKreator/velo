@@ -6,7 +6,6 @@ import { createOrderLookupActions } from './actions/orderLookupActions'
 import { createHeroActions } from './actions/heroActions'
 
 import { mockCreditAnalysis } from './mock.api'
-import { createSuccessActions } from './actions/successActions'
 
 type App = {
   checkout: ReturnType<typeof createCheckoutActions>
@@ -16,7 +15,6 @@ type App = {
   mock: {
     creditAnalysis: (score: number) => Promise<void>
   }
-  success: ReturnType<typeof createSuccessActions>
 }
 
 export const test = base.extend<{ app: App }>({
@@ -29,7 +27,6 @@ export const test = base.extend<{ app: App }>({
       mock: {
         creditAnalysis: async (score: number) => await mockCreditAnalysis(page, score)
       },
-      success: createSuccessActions(page)
     }
     await use(app)
   }
