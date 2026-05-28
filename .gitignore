@@ -1,119 +1,35 @@
-# -------------------------------------------------------
-# Node / Package Managers
-# -------------------------------------------------------
-node_modules/
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-package-lock.json
-pnpm-lock.yaml
 
-# -------------------------------------------------------
-# Build / Output (TS, TSX, React, Tools)
-# -------------------------------------------------------
-dist/
-dist-ssr/
-build/
-out/
-tmp/
-temp/
+node_modules
+dist
+dist-ssr
 *.local
-.next/
-.vercel/
-.vite/
-.esbuild/
-webpack-stats.json
 
-# -------------------------------------------------------
-# TypeScript
-# -------------------------------------------------------
-*.tsbuildinfo
-tsconfig.tsbuildinfo
-
-# -------------------------------------------------------
-# Playwright Artifacts
-# -------------------------------------------------------
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
-/playwright-report.zip
-/.playwright-cache/
-
-# Traces, videos, screenshots (optional)
-*.zip
-*.mp4
-*.webm
-*.png
-!src/assets/*.png
-*.jpg
-
-# -------------------------------------------------------
-# Coverage Tools
-# -------------------------------------------------------
-coverage/
-coverage-final.json
-.nyc_output/
-
-# -------------------------------------------------------
-# Environment Variables
-# -------------------------------------------------------
-.env
-.env.*
-.env.local
-.env.test
-.env.development
-.env.production
-
-# -------------------------------------------------------
-# Editor / IDE
-# -------------------------------------------------------
+# Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-!.vscode/settings.json
-.idea/
+.idea
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-Thumbs.db
 
-# -------------------------------------------------------
-# OS / System Files
-# -------------------------------------------------------
-.DS_Store
-ehthumbs.db
-Icon?
-*.tmp
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
 
-# -------------------------------------------------------
-# Cursor AI / Code Editor
-# -------------------------------------------------------
-.cursor/
-.cursor-cache/
-.history/
+.vercel
 
-# -------------------------------------------------------
-# Logs
-# -------------------------------------------------------
-logs/
-*.log
-
-# -------------------------------------------------------
-# Misc
-# -------------------------------------------------------
-*.bak
-*.orig
-*.patch
-
-# Others
-db-password.txt
-favicon.ico
-placeholder.svg
-robots.txt
-site.webmanifest
+.env
