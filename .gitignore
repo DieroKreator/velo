@@ -48,6 +48,7 @@ tsconfig.tsbuildinfo
 *.mp4
 *.webm
 *.png
+!src/assets/*.png
 *.jpg
 
 # -------------------------------------------------------
