@@ -8,7 +8,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 package-lock.json
-yarn.lock
 pnpm-lock.yaml
 
 # -------------------------------------------------------
@@ -111,20 +110,7 @@ logs/
 *.orig
 *.patch
 
-# Ignore entire src folder
-src/
-supabase/
-
 # Others
-components.json
-eslint.config.js 
-*.html
-postcss.config.js
-tailwind.config.ts
-tsconfig.app.json
-tsconfig.json
-tsconfig.node.json
-vite.config.ts
 db-password.txt
 favicon.ico
 placeholder.svg
