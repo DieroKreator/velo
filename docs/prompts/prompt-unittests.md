@@ -26,7 +26,7 @@ Crie um workflow do GitHub Actions focado exclusivamente em testes unitários, c
 1. Checkout (actions/checkout, última versão)
 2. Setup Node (actions/setup-node, última versão, usando NODE_VERSION)
 3. Habilitar Corepack (Yarn)
-4. Instalar dependências
+4. Instalar dependências (yarn install)
 5. Rodar testes (yarn test)
 
 ## Convenções
