@@ -1,21 +1,21 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import InputMask from 'react-input-mask';
-import { ArrowLeft, Loader2 } from 'lucide-react';
-import { z } from 'zod';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import InputMask from 'react-input-mask'
+import { ArrowLeft, Loader2 } from 'lucide-react'
+import { z } from 'zod'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
+import { useToast } from '@/hooks/use-toast'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/ui/select'
 import {
   useConfiguratorStore,
   calculateTotalPrice,
@@ -24,18 +24,18 @@ import {
   WheelType,
   OPTIONAL_LABELS,
   OPTIONAL_PRICES,
-} from '@/store/configuratorStore';
-import { createOrder } from '@/hooks/useOrders';
-import { supabase } from '@/integrations/supabase/client';
-import { onlyDigits, isValidCpf, isValidEmailStrict } from '@/lib/validators';
+} from '@/store/configuratorStore'
+import { createOrder } from '@/hooks/useOrders'
+import { supabase } from '@/integrations/supabase/client'
+import { onlyDigits, isValidCpf, isValidEmailStrict } from '@/lib/validators'
 
-import logo from '@/assets/brand.svg';
-import glacierBlueAero from '@/assets/glacier-blue-aero-wheels.png';
-import glacierBlueSport from '@/assets/glacier-blue-sport-wheels.png';
-import lunarWhiteAero from '@/assets/lunar-white-aero-wheels.png';
-import lunarWhiteSport from '@/assets/lunar-white-sport-wheels.png';
-import midnightBlackAero from '@/assets/midnight-black-aero-wheels.png';
-import midnightBlackSport from '@/assets/midnight-black-sport-wheels.png';
+import logo from '@/assets/brand.svg'
+import glacierBlueAero from '@/assets/glacier-blue-aero-wheels.png'
+import glacierBlueSport from '@/assets/glacier-blue-sport-wheels.png'
+import lunarWhiteAero from '@/assets/lunar-white-aero-wheels.png'
+import lunarWhiteSport from '@/assets/lunar-white-sport-wheels.png'
+import midnightBlackAero from '@/assets/midnight-black-aero-wheels.png'
+import midnightBlackSport from '@/assets/midnight-black-sport-wheels.png'
 
 const exteriorImages: Record<ExteriorColor, Record<WheelType, string>> = {
   'glacier-blue': {
@@ -50,14 +50,14 @@ const exteriorImages: Record<ExteriorColor, Record<WheelType, string>> = {
     aero: midnightBlackAero,
     sport: midnightBlackSport,
   },
-};
+}
 
 const stores = [
   'Velô Paulista - Av. Paulista, 1000',
   'Velô Faria Lima - Av. Faria Lima, 2500',
   'Velô Morumbi - Av. Morumbi, 1500',
   'Velô Ibirapuera - Av. Ibirapuera, 3000',
-];
+]
 
 const orderSchema = z.object({
   name: z.string().trim().min(2, 'Nome deve ter pelo menos 2 caracteres'),
@@ -73,24 +73,24 @@ const orderSchema = z.object({
   document: z.string().refine((val) => isValidCpf(val), 'CPF inválido'),
   store: z.string().min(1, 'Selecione uma loja'),
   terms: z.boolean().refine((val) => val === true, 'Aceite os termos'),
-});
+})
 
-type FormData = z.infer<typeof orderSchema>;
+type FormData = z.infer<typeof orderSchema>
 
 const colorLabels: Record<ExteriorColor, string> = {
   'glacier-blue': 'Glacier Blue',
   'lunar-white': 'Lunar White',
   'midnight-black': 'Midnight Black',
-};
+}
 
 const Order = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const { configuration, resetConfiguration } = useConfiguratorStore();
-  const [paymentMethod, setPaymentMethod] = useState<'avista' | 'financiamento'>('avista');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
-  const [entryValue, setEntryValue] = useState<number>(0);
+  const navigate = useNavigate()
+  const { toast } = useToast()
+  const { configuration, resetConfiguration } = useConfiguratorStore()
+  const [paymentMethod, setPaymentMethod] = useState<'avista' | 'financiamento'>('avista')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({})
+  const [entryValue, setEntryValue] = useState<number>(0)
   const [formData, setFormData] = useState<FormData>({
     name: '',
     lastname: '',
@@ -99,111 +99,111 @@ const Order = () => {
     document: '',
     store: '',
     terms: false,
-  });
+  })
 
-  const totalPrice = calculateTotalPrice(configuration);
+  const totalPrice = calculateTotalPrice(configuration)
 
   // Cálculo dinâmico das parcelas baseado no valor da entrada
   // Parcela = (Total - Entrada) / 12 * 1.02
-  const amountToFinance = Math.max(0, totalPrice - entryValue);
-  const installmentValue = (amountToFinance / 12) * 1.02;
-  const totalFinanced = installmentValue * 12;
+  const amountToFinance = Math.max(0, totalPrice - entryValue)
+  const installmentValue = (amountToFinance / 12) * 1.02
+  const totalFinanced = installmentValue * 12
 
   const handleChange = (field: keyof FormData, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }))
     }
-  };
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     // Validate
-    const result = orderSchema.safeParse(formData);
+    const result = orderSchema.safeParse(formData)
     if (!result.success) {
-      const fieldErrors: Partial<Record<keyof FormData, string>> = {};
+      const fieldErrors: Partial<Record<keyof FormData, string>> = {}
       result.error.errors.forEach((err) => {
-        const field = err.path[0] as keyof FormData;
-        fieldErrors[field] = err.message;
-      });
-      setErrors(fieldErrors);
-      return;
+        const field = err.path[0] as keyof FormData
+        fieldErrors[field] = err.message
+      })
+      setErrors(fieldErrors)
+      return
     }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true)
 
-    let orderStatus: 'APROVADO' | 'REPROVADO' | 'EM_ANALISE' = 'APROVADO';
+    let orderStatus: 'APROVADO' | 'REPROVADO' | 'EM_ANALISE' = 'APROVADO'
 
     // Análise de crédito apenas para financiamento
     if (paymentMethod === 'financiamento') {
       try {
         const { data, error } = await supabase.functions.invoke('credit-analysis', {
           body: { cpf: formData.document },
-        });
+        })
 
         if (error || !data || typeof data.score !== 'number') {
-          console.error('Credit analysis error:', error || 'Invalid response');
+          console.error('Credit analysis error:', error || 'Invalid response')
           toast({
             title: 'Erro',
             description: 'Falha ao consultar análise de crédito. Verifique seus dados ou tente mais tarde.',
             variant: 'destructive',
             // @ts-ignore - data-testid para testes
             'data-testid': 'toast-error',
-          });
-          setIsSubmitting(false);
-          return;
+          })
+          setIsSubmitting(false)
+          return
         }
 
-        const score = data.score;
-        const entryPercentage = entryValue / totalPrice;
+        const score = data.score
+        const entryPercentage = entryValue / totalPrice
 
         // Regras de Decisão (Ordem de Avaliação)
         // 1️⃣ Regra da Entrada Alta: SE (Entrada >= 50% do Total) E (Score < 700) → APROVADO
         if (entryPercentage >= 0.5 && score < 700) {
-          orderStatus = 'APROVADO';
+          orderStatus = 'APROVADO'
         }
         // 2️⃣ Score Alto: SE Score > 700 → APROVADO
         else if (score > 700) {
-          orderStatus = 'APROVADO';
+          orderStatus = 'APROVADO'
         }
         // 3️⃣ Score Médio: SE Score entre 501 e 700 → EM_ANALISE
         else if (score >= 501 && score <= 700) {
-          orderStatus = 'EM_ANALISE';
+          orderStatus = 'EM_ANALISE'
         }
         // 4️⃣ Score Baixo: SE Score <= 500 → REPROVADO
         else {
-          orderStatus = 'REPROVADO';
+          orderStatus = 'REPROVADO'
         }
 
       } catch (err) {
-        console.error('Credit analysis network error:', err);
+        console.error('Credit analysis network error:', err)
         toast({
           title: 'Erro',
           description: 'Falha ao consultar análise de crédito. Verifique seus dados ou tente mais tarde.',
           variant: 'destructive',
           // @ts-ignore - data-testid para testes
           'data-testid': 'toast-error',
-        });
-        setIsSubmitting(false);
-        return;
+        })
+        setIsSubmitting(false)
+        return
       }
     }
 
     const finalPrice = paymentMethod === 'financiamento'
       ? (entryValue + totalFinanced)
-      : totalPrice;
+      : totalPrice
 
     const optionalsSanitized = (
       (configuration.optionals as unknown as string[]).filter(
         (opt) => opt in (OPTIONAL_PRICES as Record<string, number>)
       ) as unknown as typeof configuration.optionals
-    );
+    )
 
     const configurationForOrder = {
       ...configuration,
       optionals: optionalsSanitized,
-    };
+    }
 
     const { order, error } = await createOrder({
       configuration: configurationForOrder,
@@ -218,27 +218,27 @@ const Order = () => {
       },
       paymentMethod,
       status: orderStatus,
-    });
+    })
 
     if (error || !order) {
       toast({
         title: 'Erro ao criar pedido',
         description: error || 'Tente novamente mais tarde.',
         variant: 'destructive',
-      });
-      setIsSubmitting(false);
-      return;
+      })
+      setIsSubmitting(false)
+      return
     }
 
     // Add installment value for display
     if (paymentMethod === 'financiamento') {
-      order.installmentValue = installmentValue;
+      order.installmentValue = installmentValue
     }
-    order.customer.store = formData.store;
+    order.customer.store = formData.store
 
-    resetConfiguration();
-    navigate('/success', { state: { order } });
-  };
+    resetConfiguration()
+    navigate('/success', { state: { order } })
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -543,7 +543,7 @@ const Order = () => {
         </div>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default Order;
+export default Order
