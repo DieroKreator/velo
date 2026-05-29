@@ -7,7 +7,7 @@ export const isValidCpf = (value: string): boolean => {
 
     const calcDigit = (base: string, factor: number): number => {
         let total = 0
-        for (let i = 0 i <base.length i++) {
+        for (let i = 0; i < base.length; i++) {
             total += Number(base[i]) * (factor - i)
         }
         const mod = total % 11
