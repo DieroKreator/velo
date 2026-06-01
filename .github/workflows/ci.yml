@@ -111,7 +111,7 @@ jobs:
 
       # 5. Instalação do Chromium
       - name: Install Playwright Browser
-        run: yarn playwright install --with-deps chromium
+        run: yarn playwright install chromium --with-deps
 
       # 6. Execução dos Testes de Regressão
       - name: Run E2E Regression Tests
