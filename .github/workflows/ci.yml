@@ -109,21 +109,17 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      # 5. Instalação de dependências do sistema para o playwright
-      - name: Install Playwright system dependencies
-        run: yarn playwright install-deps chromium
+      # 5. Instalação do Chromium
+      - name: Install Plawright Browser
+        run: yarn playwright install --with-deps chromium
 
-      # 6. Instalação do Chromium
-      - name: Install Playwright Browser
-        run: yarn playwright install chromium
-
-      # 7. Execução dos Testes de Regressão
+      # 6. Execução dos Testes de Regressão
       - name: Run E2E Regression Tests
         run: yarn playwright test
         env:
           BASE_URL: ${{ needs.build-and-deploy.outputs.deployment-url }}
 
-      # 8. Relatório de Testes Automatizados
+      # 7. Relatório de Testes Automatizados
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7.0.1
