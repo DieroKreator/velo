@@ -118,11 +118,11 @@ jobs:
 
       # 5. Instalação do Chromium
       - name: Install Plawright Browser
-        run: yarn playwright@latest install --with-deps
+        run: npx playwright@latest install --with-deps
 
       # 6. Validar navegadores instalados
       - name: Verify Playwright browsers
-        run: yarn playwright show-browsers 
+        run: npx playwright show-browsers 
 
       # 7. Execução dos Testes de Regressão
       - name: Run E2E Regression Tests
