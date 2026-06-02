@@ -118,7 +118,7 @@ jobs:
 
       # 5. Instalação do Chromium
       - name: Install Plawright Browser
-        run: yarn playwright@latest install chromium
+        run: yarn playwright@latest install --with-deps
 
       # 6. Validar navegadores instalados
       - name: Verify Playwright browsers
