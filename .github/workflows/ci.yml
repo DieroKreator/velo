@@ -118,7 +118,7 @@ jobs:
 
       # 5. Instalação do Chromium
       - name: Install Plawright Browser
-        run: npx playwright@latest install chromium chromium-headless-shell --with-deps
+        run: npx playwright@latest install --with-deps
 
       # 6. Execução dos Testes de Regressão
       - name: Run E2E Regression Tests
