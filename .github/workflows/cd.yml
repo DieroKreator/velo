@@ -114,15 +114,15 @@ jobs:
 
       # 4. Instala as dependências do projeto
       - name: Install dependencies
-        run: yarn install
+        run: npx install
 
       # 5. Instalação do Chromium
       - name: Install Plawright Browser
-        run: npx playwright@latest install --with-deps
+        run: npx playwright install --with-deps
 
       # 6. Execução dos Testes de Regressão
       - name: Run E2E Regression Tests
-        run: yarn playwright test
+        run: npx playwright test
         env:
           BASE_URL: ${{ needs.build-and-deploy.outputs.deployment-url }}
 
