@@ -114,7 +114,7 @@ jobs:
 
       # 4. Instala as dependências do projeto
       - name: Install dependencies
-        run: npx install
+        run: yarn install
 
       # 5. Instalação do Chromium
       - name: Install Plawright Browser
