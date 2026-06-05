@@ -38,9 +38,18 @@ export async function insertOrder(order: OrderDetails) {
 }
 
 export async function deleteOrderByNumber(orderNumber: string) {
-  await db.deleteFrom('orders').where('order_number', '=', orderNumber).execute()
+  try {
+    await db.deleteFrom('orders').where('order_number', '=', orderNumber).execute()
+  } catch (error) {
+    console.warn(`Failed to delete order ${orderNumber}:`, error)
+  }
 }
 
 export async function deleteOrderByEmail(email: string) {
-  await db.deleteFrom('orders').where('customer_email', '=', email).execute()
+  try {
+    await db.deleteFrom('orders').where('customer_email', '=', email).execute()
+  } catch (error) {
+    console.warn(`Failed to delete order for email ${email}:`, error)
+    // Don't throw - allow tests to continue even if cleanup fails
+  }
 }
