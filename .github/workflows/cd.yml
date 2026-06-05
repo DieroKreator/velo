@@ -86,7 +86,7 @@ jobs:
       - name: Deploy preview
         id: deploy
         run: |
-          URL=$(npx vercel deploy --prebuilt \
+          URL=$(yarn vercel deploy --prebuilt \
           --target=preview \
           --token=$VERCEL_TOKEN \
           --scope=$VERCEL_SCOPE 2>&1 | grep -o 'https://[^ ]*vercel\.app' | tail -1)
