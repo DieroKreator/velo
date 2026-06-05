@@ -42,11 +42,5 @@ export async function deleteOrderByNumber(orderNumber: string) {
 }
 
 export async function deleteOrderByEmail(email: string) {
-  try {
-    await db.deleteFrom('orders')
-      .where('customer_email', '=', email)
-      .execute()
-  } catch (error) {
-    console.warn(`Failed to delete order with email ${email}:`, error)
-  }
+  await db.deleteFrom('orders').where('customer_email', '=', email).execute()
 }
