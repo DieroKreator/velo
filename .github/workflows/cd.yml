@@ -86,10 +86,15 @@ jobs:
       - name: Deploy preview
         id: deploy
         run: |
-          URL=$(yarn --silent vercel deploy --prebuilt \
+          URL=$(npx --silent vercel deploy --prebuilt \
+          --target=preview \
           --token=$VERCEL_TOKEN \
           --scope=$VERCEL_SCOPE)
           echo "deployment-url=$URL" >> $GITHUB_OUTPUT
+
+      # 8. Debug URL
+      - name: Debug URL
+        run: echo "URL capturada => ${{ needs.build-and-deploy.outputs.deployment-url }}"
 
   e2e-tests:
     name: Run E2E Tests
