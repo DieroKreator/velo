@@ -42,5 +42,7 @@ export async function deleteOrderByNumber(orderNumber: string) {
 }
 
 export async function deleteOrderByEmail(email: string) {
-  await db.deleteFrom('orders').where('customer_email', '=', email).execute()
+  await db.deleteFrom('orders')
+    .where(eb => eb('customer_email', '=', email))
+    .execute()
 }
