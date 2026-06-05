@@ -86,7 +86,7 @@ jobs:
       - name: Deploy preview
         id: deploy
         run: |
-          URL=$(npx --silent vercel deploy --prebuilt \
+          URL=$(npx vercel deploy --prebuilt \
           --target=preview \
           --token=$VERCEL_TOKEN \
           --scope=$VERCEL_SCOPE)
