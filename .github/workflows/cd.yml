@@ -89,7 +89,8 @@ jobs:
           URL=$(npx vercel deploy --prebuilt \
           --target=preview \
           --token=$VERCEL_TOKEN \
-          --scope=$VERCEL_SCOPE)
+          --scope=$VERCEL_SCOPE 2>&1 | grep -o 'https://[^ ]*vercel\.app' | tail -1)
+          echo "URL capturada => $URL"
           echo "deployment-url=$URL" >> $GITHUB_OUTPUT
 
       # 8. Debug URL
