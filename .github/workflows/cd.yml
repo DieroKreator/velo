@@ -80,17 +80,16 @@ jobs:
       
       # 6. Build para o Vercel
       - name: Build Vercel
-        run: npx vercel build --token=$VERCEL_TOKEN
+        run: yarn vercel build --token=$VERCEL_TOKEN
 
       # 7. Deploy preview no vercel
       - name: Deploy preview
         id: deploy
         run: |
-          URL=$(npx vercel deploy --prebuilt \
+          URL=$(yarn --silent vercel deploy --prebuilt \
           --target=preview \
           --token=$VERCEL_TOKEN \
-          --scope=$VERCEL_SCOPE 2>&1 | grep -o 'https://[^ ]*vercel\.app' | tail -1)
-          echo "URL capturada => $URL"
+          --scope=$VERCEL_SCOPE)
           echo "deployment-url=$URL" >> $GITHUB_OUTPUT
 
   e2e-tests:
@@ -123,7 +122,7 @@ jobs:
 
       # 6. Execução dos Testes de Regressão
       - name: Run E2E Regression Tests
-        run: npx playwright test
+        run: yarn playwright test
         env:
           BASE_URL: ${{ needs.build-and-deploy.outputs.deployment-url }}
 
@@ -134,15 +133,15 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report
-
-      # 8. Publicar report JSON no TestDino
-      - name: Publish TestDino report
+      
+      # 8. Publicar report JSON do TestDino
+      - name: Publish Testdino Report
         if: ${{ !cancelled() }}
         run: npx tdpw upload ./playwright-report --token=${{ secrets.TD_TOKEN }}
 
   promote:
-    name: Promote to Production  
-    needs: [e2e-tests]
+    name: Promote to Production
+    needs: [build-and-deploy, e2e-tests]
     runs-on: ubuntu-latest
 
     steps:
